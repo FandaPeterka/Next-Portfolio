@@ -1,42 +1,412 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* global-theme.css */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* =============================================
+   Globální barevné proměnné – výchozí dark mode
+   ============================================= */
+   :root {
+    /* Základní barvy */
+    --color-white: #ffffff;
+    --color-black: #000000;
+
+    --bezel-color: black;
+  
+    /* LED diody a pozadí LED matice */
+    --led-on-color: #00ffff;      /* Výchozí LED barva */
+    --led-off-color: transparent;
+    --matrix-bg: var(--color-black); /* Pozadí LED matice, výchozí černé */
+  
+    /* Primární tmavé odstíny */
+    --color-bg-primary: #2d3748;  /* Základní pozadí pro většinu komponent */
+    --color-accent: #03ffff;       /* Akcentní barva, hover efekty */
+  
+    /* Odstíny šedi */
+    --color-light-gray: #e2e8f0;   /* Text u popisků, card-description */
+    --color-medium-gray: #999999;  /* Např. navbar separator, experience-date */
+    --color-project-desc: #eeeeee; /* Projektový popis */
+  
+    /* Okraje a selecty */
+    --color-border-white: #ffffff;
+    --color-border-ccc: #cccccc;
+    --color-border-444: #444444;
+  
+    /* Stavové barvy interaktivních prvků */
+    --color-hover-bg: #000000;
+    --color-active-bg: #1a202c;
+    --color-dropdown-hover: #4a5568;
+  
+    /* Další efektní barvy */
+    --color-skill-bg: rgba(0, 0, 0, 0.2);
+    --color-overlay-bg: rgba(0, 0, 0, 0.5);
   }
+  
+  /* =============================================
+     Alternativní tmavá témata – každý mění i matrix-bg a LED barvy
+     ============================================= */
+  
+  /* 1. Elegant Slate */
+  [data-theme="elegant-slate"] {
+    --color-bg-primary: #3a4f6b;
+    --color-accent: #6c8ebf;
+    --led-on-color: #6c8ebf;
+    --bezel-color:  #6c8ebf;
+    --matrix-bg: #1a1e29; /* mírně modrofialové, aby LED diody kontrastovaly */
+  }
+  
+  /* 2. Forest Dawn */
+  [data-theme="forest-dawn"] {
+    --color-bg-primary: #2d4730;
+    --color-accent: #689f38;
+    --led-on-color: #689f38;
+    --bezel-color:#689f38;
+    --matrix-bg: #233427; /* tmavě zelený podklad */
+  }
+  
+  /* 3. Sandstorm */
+  [data-theme="sandstorm"] {
+    --color-bg-primary: #8d6e63;
+    --color-accent: #c3986b;
+    --led-on-color: #c3986b;
+    --bezel-color:#c3986b;
+    --matrix-bg: #4a3f38; /* teplý, písečný odstín */
+  }
+  
+  /* 4. Midnight Purple */
+  [data-theme="midnight-purple"] {
+    --color-bg-primary: #4b0082;
+    --color-accent: #8e44ad;
+    --led-on-color: #8e44ad;
+    --bezel-color: #8e44ad;
+    --matrix-bg: #1d0d34; /* hluboký fialový podklad */
+  }
+  
+  /* 5. Glacier Night */
+  [data-theme="glacier-night"] {
+    --color-bg-primary: #37474f;
+    --color-accent: #4a90e2;
+    --led-on-color: #4a90e2;
+    --bezel-color: #4a90e2;
+    --matrix-bg: #263238; /* chladný modro-šedý podklad */
+  }
+  
+  /* 6. Mocha Space */
+  [data-theme="mocha-space"] {
+    --color-bg-primary: #5d4037;
+    --color-accent: #b56737;
+    --led-on-color: #b56737;
+    --bezel-color: #b56737;
+    --matrix-bg: #3e2f2b; /* tmavě hnědý, dobře kontrastuje s LED diodami */
+  }
+  
+  /* =============================================
+     Pomocné třídy – pozadí
+     ============================================= */
+  .bg-primary { background-color: var(--color-bg-primary); }
+  .bg-white   { background-color: var(--color-white); }
+  .bg-black   { background-color: var(--color-black); }
+  .bg-hover   { background-color: var(--color-hover-bg); }
+  .bg-active  { background-color: var(--color-active-bg); }
+  .bg-dropdown-hover { background-color: var(--color-dropdown-hover); }
+  .bg-skill   { background-color: var(--color-skill-bg); }
+  .bg-overlay { background-color: var(--color-overlay-bg); }
+  .bg-matrix  { background-color: var(--matrix-bg); }
+  
+  /* =============================================
+     Pomocné třídy – text
+     ============================================= */
+  .text-white        { color: var(--color-white); }
+  .text-black        { color: var(--color-black); }
+  .text-light        { color: var(--color-light-gray); }
+  .text-medium       { color: var(--color-medium-gray); }
+  .text-accent       { color: var(--color-accent); }
+  .text-project-desc { color: var(--color-project-desc); }
+  
+  /* =============================================
+     Pomocné třídy – okraje
+     ============================================= */
+  .border-white { border-color: var(--color-border-white); }
+  .border-ccc   { border-color: var(--color-border-ccc); }
+  .border-444   { border-color: var(--color-border-444); }
+  
+  /* =============================================
+     Třídy pro interaktivní stavy
+     ============================================= */
+  .hover-bg { transition: background-color 0.3s ease; }
+  .hover-bg:hover { background-color: var(--color-hover-bg); }
+  .active-bg { background-color: var(--color-active-bg); }
+  
+  /* Pro SVG */
+  .svg-stroke-white { stroke: var(--color-white); }
+  
+  /* =============================================
+     1. CardsComponent / Card styly
+     ============================================= */
+  .face-panel {
+    background-color: var(--color-bg-primary);
+  }
+  
+  .description-text {
+    color: var(--color-light-gray);
+  }
+  
+  /* =============================================
+     2. Formulář – CustomForm
+     ============================================= */
+  .custom-group label {
+    color: var(--color-white);
+  }
+  
+  .custom-input,
+  .custom-textarea {
+    border: 1px solid var(--color-white);
+    background-color: var(--color-bg-primary);
+    color: var(--color-white);
+  }
+  
+  .custom-button {
+    border: 1px solid var(--color-white);
+    color: var(--color-white);
+  }
+  
+  .custom-button:hover {
+    background-color: var(--color-black);
+    color: var(--color-accent);
+    border: 1px solid var(--color-white);
+  }
+  
+  .custom-feedback {
+    color: var(--color-white);
+  }
+  
+  /* =============================================
+     3. Tlačítka, ovládací prvky
+     ============================================= */
+  .restart-button,
+  .back-button {
+    color: var(--color-white);
+  }
+  
+  .dot {
+    background-color: var(--color-white);
+  }
+  
+  /* =============================================
+     4. Footer
+     ============================================= */
+  .footer {
+    background-color: var(--color-bg-primary);
+    color: var(--color-white);
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  
+  /* =============================================
+     5. Horizontal Timeline
+     ============================================= */
+  .timeline-line {
+    background: var(--color-white);
+  }
+  
+  .experience-icon {
+    background: var(--color-bg-primary);
+  }
+  
+  .experience-icon.active {
+    border: 3px solid var(--color-white);
+    box-shadow: 0 0 10px 2px var(--color-white);
+  }
+  
+  .experience-date {
+    color: var(--color-white);
+  }
+  
+  .overlay-wrapper {
+    background: var(--color-bg-primary);
+  }
+  
+  .description-text { /* Specifické pro horizontální timeline */
+    color: var(--color-white);
+  }
+  
+  .skill {
+    background: var(--color-skill-bg);
+  }
+  
+  /* =============================================
+     6. LedMatrix
+     ============================================= */
+  .ledmatrix-wrapper {
+    background-color: var(--matrix-bg);
+  }
+  
+  .ledmatrix-grid {
+    background-color: var(--matrix-bg);
+  }
+  
+  /* =============================================
+     7. Navbar
+     ============================================= */
+  .navbar {
+    background-color: var(--color-bg-primary);
+    color: var(--color-white);
+  }
+  
+  .navbar-link:hover {
+    color: var(--color-accent);
+  }
+  
+  .navbar-separator {
+    color: var(--color-medium-gray);
+  }
+  
+  .navbar-select select {
+    background-color: var(--color-bg-primary);
+    color: var(--color-white);
+    border: 1px solid var(--color-border-ccc);
+  }
+  
+  /* =============================================
+     8. Mobilní dropdown menu
+     ============================================= */
+  .mobile-dropdown {
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-border-444);
+  }
+  
+  .dropdown-link {
+    color: var(--color-white);
+  }
+  
+  .dropdown-link:hover {
+    background-color: var(--color-dropdown-hover);
+  }
+  
+  .dropdown-link.active {
+    background-color: var(--color-active-bg);
+  }
+  
+  /* =============================================
+     9. ScrollIndicator
+     ============================================= */
+  .scroll-indicator__icon svg {
+    stroke: var(--color-accent);
+  }
+  
+  .scroll-indicator__text {
+    color: var(--color-white);
+  }
+  
+  /* =============================================
+     10. Další globální styly
+     ============================================= */
+  body {
+    color: var(--color-white);
+  }
+  
+  .description {
+    background: var(--color-overlay-bg);
+  }
+  
+  /* =============================================
+     11. TechCard (část z karet)
+     ============================================= */
+  .card-face {
+    background-color: var(--color-bg-primary);
+  }
+  
+  .card-description {
+    font-size: 0.875rem;
+    color: var(--color-light-gray);
+    text-align: center;
+  }
+
+  .dropdown-link:hover {
+    background-color: var(--color-accent);
+  }
+  
+  .dropdown-link.active {
+    background-color: var(--color-accent);
+  }
+
+  .lang-btn:hover {
+    border-color: white;
+  }
+  
+  /* Dropdown, který vyjíždí pod tlačítkem */
+  .language-dropdown {
+    background-color: var(--color-bg-primary); /* Přizpůsobit barvu pozadí podle navbaru */
+  }
+  
+  /* Jednotlivé jazykové možnosti */
+  .language-option {
+    color: #fff;
+  }
+  
+  .language-option:hover {
+    background-color: var(--color-accent);
+  }
+
+  /* Credits.css – nový vzhled Credits stránky, využívá globální proměnné z global-theme.css */
+
+/* Zajistí, že stránka zabírá celou obrazovku a obsah je vycentrovaný */
+.credits-page {
+  background-color: var(--color-bg-primary); /* využití téma pozadí */
+  color: var(--color-white); /* text ve světlé barvě */
 }
 
-html,
+
+/* Odkazy – barevné efekty, využijeme akcentní barvu */
+.credits-page a {
+  color: var(--color-accent);
+}
+
+/* Při přejetí myší změníme barvu odkazu */
+.credits-page a:hover {
+  color: var(--color-white);
+}
+
+/* globals.css */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
 body {
-  max-width: 100vw;
+  line-height: 1;
   overflow-x: hidden;
 }
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}

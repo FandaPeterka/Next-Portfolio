@@ -1,0 +1,17 @@
+.theme-toggle {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .theme-toggle-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: #b0b0b0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  }
+  

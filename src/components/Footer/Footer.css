@@ -1,0 +1,48 @@
+/* Footer.css */
+.footer {
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  
+  .footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .signature-wrapper {
+    margin-right: 10px;
+    width: 80px;
+  }
+  
+  /* Selektor pro komponentu Signature bez animací */
+  .signature svg {
+    width: 120%;
+    height: auto;
+  }
+  
+  .signature path {
+    stroke: white !important;
+    stroke-width: 5;
+    fill: none;
+  }
+  
+  /* Styling pro tlačítko Credits */
+  .credits-button {
+    background-color: inherit;
+    color: #fff;
+    text-decoration: none;
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    display: flex;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .credits-button:hover {
+    text-decoration: underline;
+  }

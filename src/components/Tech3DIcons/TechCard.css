@@ -1,0 +1,71 @@
+/* TechCard.css */
+.card,
+.card * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-drag: none;
+}
+
+.card-tilt {
+  width: 110px;
+  height: 130px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.card-container {
+  perspective: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  position: relative;
+  background-color: var(--color-bg-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.card-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 0.5rem;
+  object-fit: contain;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: bold;
+  white-space: nowrap;
+  color: #fff;
+}
+
+@media (min-width: 1600px) {
+  .card-tilt {
+    width: 90px;
+    height: 110px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-tilt {
+    width: 70px;
+    height: 90px;
+  }
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0.2rem;
+  }
+  .card-title {
+    font-size: 0.8rem;
+  }
+}

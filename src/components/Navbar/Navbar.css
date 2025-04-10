@@ -1,0 +1,185 @@
+  /* Ostatní styly pro navbar */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #fff;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-brand img {
+    height: 40px;
+    margin-right: 0.5rem;
+    transform: scaleX(-1);
+  }
+  
+  .navbar-brand p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .navbar-brand .brand-subtext {
+    display: none;
+  }
+  
+  @media (min-width: 140px) {
+    .navbar-brand .brand-subtext {
+      display: inline;
+    }
+  }
+  
+  /* Desktop – centrum: odkazy a přepínače */
+  .navbar-center {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .navbar-switchers {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  /* Mobilní část: přepínače a hamburger */
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Odkazy */
+  .navbar-link {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0 0.5rem;
+    transition: color 0.2s;
+  }
+  
+  .navbar-link:hover {
+  }
+  
+  .navbar-link.active {
+    text-decoration: underline;
+  }
+  
+  .navbar-separator {
+    padding: 0 0.5rem;
+  }
+  
+  /* Select menu (pokud se používá) */
+  .navbar-select select {
+    color: #fff;
+    border: 1px solid #ccc;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  /* Mobile menu icon */
+  .mobile-menu-icon {
+    cursor: pointer;
+    color: #fff;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Mobile dropdown menu */
+  .mobile-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 5;
+    animation: fadeIn 0.2s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  
+  .dropdown-link {
+    background: none;
+    border: none;
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    text-align: left;
+    width: 100%;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .dropdown-link:hover {
+  }
+  
+  .dropdown-link.active {
+    font-weight: bold;
+  }
+  
+  /* Responsiveness */
+  /* Desktop verze od 768px */
+  @media (min-width: 768px) {
+    .navbar-center {
+      display: flex;
+    }
+    .navbar-right {
+      display: none;
+    }
+  }
+  
+  /* Mobilní verze do 768px */
+  @media (max-width: 1200px) {
+    .navbar-center {
+      display: none;
+    }
+    .navbar-right {
+      display: flex;
+    }
+  }
+
+  /* Progresní linka */
+  .scroll-progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 5px;
+    background-color: white;
+    transform-origin: left center;
+    width: 100%;
+  }
+
+  @media (max-width: 600px) {
+    /* Úprava dropdownu pro LanguageSwitcher */
+    
+    /* Úprava mobilního dropdownu v Navbar */
+    .mobile-dropdown {
+      position: fixed; /* pro zajištění naplnění obrazovky */
+      left: 0;
+      right: 0;
+      top: 60px; /* nebo dle vaší potřeby - výška navbaru */
+      margin: 0;
+      width: 100vw;
+      border-radius: 0;
+    }
+  }

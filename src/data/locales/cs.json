@@ -1,0 +1,161 @@
+{
+    "app": {
+      "sections": [
+        { "label": "Vítejte" },
+        { "label": "Úvod" },
+        { "label": "Technologie" },
+        { "label": "Zkušenosti" },
+        { "label": "Projekty" },
+        { "label": "Kontakt" }
+      ],
+      "scrollIndicatorText": "Vítejte! Jsem Fanda."
+    },
+    "appTexts": {
+      "ledMatrixText": "Vítejte, Fanda",
+      "scrollIndicators": [
+        "Ahoj! Jsem Fanda."
+      ]
+    },
+    "cards": [
+      {
+        "title": "O mně",
+        "description": "Jmenuji se František Peterka je mi 23 let. Jsem IT specialista a vývojář webových aplikací."
+      },
+      {
+        "title": "Frontend",
+        "description": "Vytvářím responzivní uživatelská rozhraní s využitím React a Next.js"
+      },
+      {
+        "title": "Backend",
+        "description": "Vyvíjím bezpečné a škálovatelné backendy pomocí Node.js, Express.js a MongoDB."
+      },
+      {
+        "title": "Web",
+        "description": "Věnuji se převážně prostředí webových aplikací."
+      },
+      {
+        "title": "Student",
+        "description": "Studuji softwarový vývoj a rád se učím nové technologie."
+      },
+      
+      {
+        "title": "IT",
+        "description": "Mám praxi ve správě windows systémů, síťové administraci a automatizaci."
+      }
+    ],
+    "contactForm": {
+      "labels": {
+        "name": "Jméno",
+        "email": "Email",
+        "message": "Zpráva"
+      },
+      "placeholders": {
+        "name": "Vaše jméno",
+        "email": "Váš email",
+        "message": "Vaše zpráva"
+      },
+      "feedback": {
+        "success": "Email byl úspěšně odeslán!",
+        "errorPrefix": "Chyba při odesílání emailu: "
+      }
+    },
+    "footer": {
+      "copyright": "© 2025 František Peterka. Všechna práva vyhrazena."
+    },
+    "scrollIndicator": {
+      "defaultText": "Posuňte dolů"
+    },
+    "navbar": {
+      "brandIcon": "/developer.png",
+      "brandText": "Fanda",
+      "brandSubText": "JS Vývojář",
+      "separator": ">>>"
+    },
+    "projects": [
+      {
+        "name": "List Management App",
+        "description": "Komplexní řešení pro správu seznamů a databází. Aplikace nabízí správu seznamů, možnost vytváření a editace položek, filtrování a statistiky."
+      },
+      {
+        "name": "PowerShell Scripting",
+        "description": "Tento projekt využívá skriptování PowerShell pro automatizaci."
+      },
+      {
+        "name": "BoostApp",
+        "description": "Moje první webová aplikace, na které jsem se učil základy webového vývoje."
+      }
+    ],
+    "tech": {
+      "0": {
+        "title": "CSS",
+        "description": "Mám dlouholeté zkušenosti s tvorbou responzivních a moderních designů."
+      },
+      "1": {
+        "title": "Three.js",
+        "description": "Docker je platforma využívající kontejnerizaci, která zjednodušuje proces vytváření, doručování a spouštění aplikací."
+      },
+      "2": {
+        "title": "Figma",
+        "description": "Navrhuji moderní uživatelská rozhraní a vizuální koncepty."
+      },
+      "3": {
+        "title": "Git",
+        "description": "Efektivně využívám Git pro týmovou spolupráci a správu projektů."
+      },
+      "4": {
+        "title": "HTML",
+        "description": "Vytvářím semanticky správné a přístupné (SEO) webové stránky."
+      },
+      "5": {
+        "title": "JavaScript",
+        "description": "Perfektně zvládám základní i pokročilé přístupy tohoto jazyka."
+      },
+      "6": {
+        "title": "MongoDB",
+        "description": "Navrhuji NoSQL databázová řešení s důrazem na výkon a flexibilitu."
+      },
+      "7": {
+        "title": "Node.js",
+        "description": "Vytvářím vysokovýkonné a škálovatelné backendy."
+      },
+      "8": {
+        "title": "React",
+        "description": "Mám bohaté zkušenosti s tvorbou moderních a dynamických frontendů."
+      },
+      "9": {
+        "title": "PowerShell",
+        "description": "Redux je předvídatelný kontejner stavu pro JavaScript aplikace, často používaný s Reactem."
+      },
+      "10": {
+        "title": "Next.js",
+        "description": "Tailwind CSS je utility-first framework pro rychlý vývoj uživatelských rozhraní."
+      },
+      "11": {
+        "title": "TypeScript",
+        "description": "Vždy je lepší psát kód bez zbytečných runtime chyb. "
+      }
+    },
+    "experiences": {
+      "0": {
+        "title": "Unicorn University",
+        "name": "Unicorn University",
+        "description": "Aktuálně se intenzivně věnuji studiu programování, se zaměřením na technologie pro webový vývoj.",
+        "date": "2023 - 2026",
+        "skills": ["#JavaScript", "#TypeScript","#Node.js" , "#Design", "#HTML", "#CSS", "#React", "#SQL", "#MongoDB", "#NodeRED", "#Agile", "#Business English"]
+      },
+      "1": {
+        "title": "IT Specialista",
+        "name": "IT Specialista",
+        "description": "Jako IT specialista se zaměřením na on-premise správu windows serverů a sítě. Mám na starosti správu a optimalizaci systémů windows, správu síťové infrastruktury a často využívám PowerShell k automatizaci a zjednodušení procesů.",
+        "date": "2023 - Přítomnost",
+        "skills": ["#Windows", "#Síťová Infrastruktura", "#Windows Server","#PowerShell", "#Simulace", "#Vzdálená Správa"]
+      },
+      "2": {
+        "title": "Univerzita obrany",
+        "name": "Univerzita obrany",
+        "description": "Studoval jsem obor Elektrotechnika. Ve třech semestrech jsem dosáhl vynikajících výsledků (průměr 1.0). Ačkoliv jsem musel ve čtvrtém semestru kvůli zdravotním důvodům studium přerušit, získal jsem silné technické a analytické základy, které nadále podporují mou kariéru v IT.",
+        "date": "2021 - 2023",
+        "skills": ["#Matematika", "#Fyzika", "#Elektrotechnika"]
+      }
+    }
+  }

@@ -1,0 +1,52 @@
+.language-switcher {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Tlačítko, které zobrazuje aktuální jazyk */
+  .lang-btn {
+    background: none;
+    border: 1px solid #ccc;
+    color: #fff;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  /* Dropdown, který vyjíždí pod tlačítkem */
+  .language-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    list-style: none;
+    padding: 0.5rem 0;
+    width: auto;
+    z-index: 1000;
+  }
+  
+  /* Jednotlivé jazykové možnosti */
+  .language-option {
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    color: #fff;
+    white-space: nowrap;
+  }
+  
+  .language-option:hover {
+  }
+  
+  /* Úprava pro nejmenší zařízení */
+  @media (max-width: 600px) {
+    .language-dropdown {
+      position: fixed;
+      top: 60px; /* nebo upravte dle výšky navbaru */
+      left: 0;
+      right: 0;
+      margin: 0;
+      width: 100vw;
+      border-radius: 0;
+    }
+  }
