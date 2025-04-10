@@ -5,13 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm install --legacy-peer-deps && next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@react-three/drei": "^10.0.6",
-    "@react-three/fiber": "^9.1.2",
+    "@react-three/fiber": "^8.9.1",
     "@react-three/postprocessing": "1.4.0",
     "camera-controls": "^2.10.0",
     "emailjs-com": "^3.2.0",
