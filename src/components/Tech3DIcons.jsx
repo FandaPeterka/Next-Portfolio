@@ -295,7 +295,8 @@ function Tech3DIconsInternal({ handleRestart, wavesAlreadyShown }) {
       {/* Svislé tlačítko na pravém okraji */}
       <MovementToggleButton
         isMovementEnabled={isMovementEnabled}
-        toggleMovement={toggleMovement}
+        toggleMovement={() => setIsMovementEnabled((p) => !p)}
+        isTouchDevice={isTouchDevice}
       />
 
       <div ref={mountRef} className="stage" />
