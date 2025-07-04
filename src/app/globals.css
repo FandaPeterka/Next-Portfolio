@@ -609,7 +609,7 @@ body {
 }
 .language-dropdown {
   position: absolute;
-  top: 100%;
+  top: 90px;
   left: 0;
   margin-top: 0.5rem;
   background-color: var(--color-bg-primary);
@@ -632,7 +632,7 @@ body {
 @media (max-width: 600px) {
   .language-dropdown {
     position: fixed;
-    top: 60px;
+    top: 70px;
     left: 0;
     right: 0;
     margin: 0;
@@ -702,17 +702,17 @@ body {
 .navbar-center {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 .navbar-switchers {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1rem; 
 }
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem; 
 }
 .navbar-link {
   background: none;
@@ -748,7 +748,7 @@ body {
 }
 .mobile-dropdown {
   position: absolute;
-  top: 100%;
+  top: 80px;
   right: 1rem;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -811,7 +811,7 @@ body {
     position: fixed;
     left: 0;
     right: 0;
-    top: 60px;
+    top: 70px;
     margin: 0;
     width: 100vw;
     border-radius: 0;
@@ -1151,6 +1151,21 @@ body {
   transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
+/* mobilní dropdown přes celou šířku */
+.theme-dropdown.mobile {
+  position: fixed;
+  top: 100px;          /* pod navbar */
+  left: 0;
+  right: 0;
+  width: 100vw;
+  padding: 1rem 0.5rem;
+  background: var(--color-bg-primary);
+  display: flex;
+  justify-content: space-evenly;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
 
 /* ========================================================
    4. CSS RESET A ZÁKLADNÍ STYLY
@@ -1213,6 +1228,27 @@ body {
   overflow-x: hidden;
 }
 
+/* === Theme palette – mobilní dropdown =================================== */
+.theme-dropdown.mobile {
+  position: fixed;          /* stejně jako language dropdown */
+  top: 70px;                /* pod navbar */
+  left: 0;
+  right: 0;
+  width: 100vw;             /* celá šířka */
+  padding: 0.75rem 0;
+  background-color: var(--color-bg-primary);
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* puntíky uvnitř dropdownu */
+.theme-option.active {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
 /* ========================================================
    5. DOPLŇKOVÉ A LAYOUTOVÉ STYLY
    --------------------------------------------------------
