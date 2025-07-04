@@ -1,4 +1,3 @@
-"use client";
 import React, { useRef, useEffect, useCallback, useMemo } from 'react';
 import gsap from 'gsap';
 
@@ -18,6 +17,7 @@ const FourDirectionalWaves = ({ isOverlay }) => {
   ]), []);
 
   const triggerPulse = useCallback((count = 0) => {
+    // Po 2. sérii vln schováme celý kontejner (bez re-renderu).
     if (count >= 2) {
       setTimeout(() => {
         if (containerRef.current) {
@@ -39,6 +39,7 @@ const FourDirectionalWaves = ({ isOverlay }) => {
             duration: pulseDuration,
             ease: 'power2.inOut',
             onComplete: () => {
+              // Poslední vlna spustí další kolo pulzů
               if (i === directions.length - 1) {
                 triggerPulse(count + 1);
               }
@@ -50,6 +51,7 @@ const FourDirectionalWaves = ({ isOverlay }) => {
   }, [directions, pulseDuration]);
 
   useEffect(() => {
+    // Pokud už jednou proběhlo, nic dalšího nespouštíme
     if (hasTriggeredRef.current) return;
 
     const observer = new IntersectionObserver(
@@ -72,39 +74,39 @@ const FourDirectionalWaves = ({ isOverlay }) => {
     return () => observer.disconnect();
   }, [triggerPulse]);
 
-  const containerStyle = useMemo(() => ({
-    position: isOverlay ? 'absolute' : 'fixed',
-    zIndex: 1000,
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 150,
-    height: 150,
-    pointerEvents: 'none'
-  }), [isOverlay]);
-
-  const dotStyle = useMemo(() => ({
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: 30,
-    height: 30,
-    borderRadius: '50%',
-    border: '4px solid white',
-    transform: 'translate(-50%, -50%)',
-  }), []);
-
   return (
-    <div ref={containerRef} style={containerStyle} role="presentation" aria-hidden="true">
+    <div
+      ref={containerRef}
+      aria-hidden="true"
+      style={{
+        position: isOverlay ? 'absolute' : 'fixed',
+        zIndex: 1000,
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 150,
+        height: 150,
+        pointerEvents: 'none'
+      }}
+    >
       {[...Array(4)].map((_, i) => (
         <div
           key={i}
           ref={(el) => (waveRefs.current[i] = el)}
-          style={dotStyle}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: 30,
+            height: 30,
+            borderRadius: '50%',
+            backgroundColor: 'white', // zde je změna – kruhy budou vyplněné
+            transform: 'translate(-50%, -50%)',
+          }}
         />
       ))}
     </div>
   );
 };
 
-export default React.memo(FourDirectionalWaves);
+export default FourDirectionalWaves;

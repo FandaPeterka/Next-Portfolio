@@ -1,15 +1,15 @@
 // app/page.jsx
 "use client";  // Protože váš kód pracuje s DOMem (scroll, useEffect apod.)
 import React, { useRef, useState, useEffect } from 'react';
-import Navbar from '../components/Navbar/Navbar';
-import Tech3DIcons from '../components/Tech3DIcons/Tech3DIcons';
-import LedMatrix from '../components/LedMatrix/LedMatrix';
+import Navbar from '@components/Navbar';
+import Tech3DIcons from '@components/Tech3DIcons';
+import LedMatrix from '@components/LedMatrix';
 import ScrollIndicator from '@components/ScrollIndicator';
-import CardsComponent from '../components/CardsComponent/CardsComponent';
-import HorizontalTimeline from '../components/HorizontalTimeline/HorizontalTimeline';
-import ProjectScreens from '../components/ProjectScreens/ProjectScreens';
-import ParticleNetwork from '../components/ContactForm/ParticleNetwork';
-import Footer from '../components/Footer/Footer';
+import CardsComponent from '@components/CardsComponent';
+import HorizontalTimeline from '@components/HorizontalTimeline';
+import ProjectScreens from '@components/ProjectScreens';
+import ParticleNetwork from '@components/ParticleNetwork';
+import Footer from '@components/Footer';
 import appData from '@data/dataApp';  // Ujistěte se, že máte správně nastaven import alias
 // Globální styly jsou importovány v layout.jsx, nemusíte importovat Theme.css zde
 

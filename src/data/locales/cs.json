@@ -85,56 +85,57 @@
         "description": "Moje první webová aplikace, na které jsem se učil základy webového vývoje."
       }
     ],
-    "tech": {
-      "0": {
-        "title": "CSS",
-        "description": "Mám dlouholeté zkušenosti s tvorbou responzivních a moderních designů."
-      },
-      "1": {
-        "title": "Three.js",
-        "description": "Docker je platforma využívající kontejnerizaci, která zjednodušuje proces vytváření, doručování a spouštění aplikací."
-      },
-      "2": {
-        "title": "Figma",
-        "description": "Navrhuji moderní uživatelská rozhraní a vizuální koncepty."
-      },
-      "3": {
-        "title": "Git",
-        "description": "Efektivně využívám Git pro týmovou spolupráci a správu projektů."
-      },
-      "4": {
-        "title": "HTML",
-        "description": "Vytvářím semanticky správné a přístupné (SEO) webové stránky."
-      },
-      "5": {
-        "title": "JavaScript",
-        "description": "Perfektně zvládám základní i pokročilé přístupy tohoto jazyka."
-      },
-      "6": {
-        "title": "MongoDB",
-        "description": "Navrhuji NoSQL databázová řešení s důrazem na výkon a flexibilitu."
-      },
-      "7": {
-        "title": "Node.js",
-        "description": "Vytvářím vysokovýkonné a škálovatelné backendy."
-      },
-      "8": {
-        "title": "React",
-        "description": "Mám bohaté zkušenosti s tvorbou moderních a dynamických frontendů."
-      },
-      "9": {
-        "title": "PowerShell",
-        "description": "Redux je předvídatelný kontejner stavu pro JavaScript aplikace, často používaný s Reactem."
-      },
-      "10": {
-        "title": "Next.js",
-        "description": "Tailwind CSS je utility-first framework pro rychlý vývoj uživatelských rozhraní."
-      },
-      "11": {
-        "title": "TypeScript",
-        "description": "Vždy je lepší psát kód bez zbytečných runtime chyb. "
-      }
+    
+  "tech": {
+    "0": {
+      "title": "CSS",
+      "description": "Používám pokročilé techniky CSS (Flexbox, Grid, animace) pro tvorbu responzivních, moderních a esteticky přitažlivých webových designů, které zajišťují skvělou uživatelskou zkušenost napříč zařízeními."
     },
+    "1": {
+      "title": "Three.js",
+      "description": "S využitím Three.js vytvářím interaktivní 3D vizualizace a animace přímo ve webovém prohlížeči, což obohacuje webové stránky o dynamické a poutavé 3D prvky."
+    },
+    "2": {
+      "title": "Figma",
+      "description": "Ve Figmě navrhuji moderní uživatelská rozhraní a interaktivní prototypy, podporuji týmovou spolupráci a vytvářím vizuálně atraktivní designy, které reflektují aktuální trendy v UI/UX."
+    },
+    "3": {
+      "title": "Git",
+      "description": "S Gitem efektivně spravuji verze kódu, spolupracuji v týmech a udržuji historii projektu, což zajišťuje plynulý vývoj a bezpečné nasazení software."
+    },
+    "4": {
+      "title": "HTML",
+      "description": "Tvořím semanticky správné a přístupné webové stránky pomocí HTML, čímž zlepšuji SEO a zajistuji konzistentní strukturu obsahu pro vyhledávače i uživatele."
+    },
+    "5": {
+      "title": "JavaScript",
+      "description": "JavaScript využívám pro vytváření dynamických a interaktivních webových aplikací, kde ovládám jak základní, tak pokročilé koncepty pro plynulý a responzivní vývoj."
+    },
+    "6": {
+      "title": "MongoDB",
+      "description": "Navrhuji flexibilní a výkonná NoSQL databázová řešení s MongoDB, která umožňují efektivní správu rozsáhlých datových sad a snadnou škálovatelnost aplikací."
+    },
+    "7": {
+      "title": "Node.js",
+      "description": "Díky Node.js vytvářím robustní a škálovatelné backendy a API, které podporují rychlou komunikaci mezi klientem a serverem a zajišťují vysoký výkon webových aplikací."
+    },
+    "8": {
+      "title": "React",
+      "description": "S Reactem navrhuji moderní a dynamické frontendové aplikace využívající komponentový přístup, což usnadňuje správu stavu a vývoj interaktivního uživatelského rozhraní."
+    },
+    "9": {
+      "title": "PowerShell",
+      "description": "PowerShell využívám jako skriptovací nástroj pro automatizaci administrativních úloh a správu systémů, zejména v prostředí Windows, což výrazně zefektivňuje provoz a údržbu IT infrastruktury."
+    },
+    "10": {
+      "title": "Next.js",
+      "description": "Next.js je framework pro React, který umožňuje server-side rendering a generování statických stránek. Díky tomu vytvářím rychlé, SEO optimalizované webové aplikace s lepší uživatelskou zkušeností."
+    },
+    "11": {
+      "title": "TypeScript",
+      "description": "S TypeScriptem rozšiřuji možnosti JavaScriptu o statické typování, což zvyšuje bezpečnost kódu, usnadňuje údržbu a minimalizuje runtime chyby v aplikacích."
+    }
+  },
     "experiences": {
       "0": {
         "title": "Unicorn University",

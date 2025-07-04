@@ -1,4 +1,4 @@
-// public/workers/LedMatrixWorker.js
+// LedMatrixWorker.js
 
 // Posloucháme na zprávy z hlavního vlákna
 self.onmessage = async (e) => {
@@ -10,7 +10,7 @@ self.onmessage = async (e) => {
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const i = (y * width + x) * 4;
-      const val = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      const val = (data[i] + data[i+1] + data[i+2]) / 3;
       gray[y * width + x] = val;
     }
   }
@@ -21,14 +21,14 @@ self.onmessage = async (e) => {
     for (let x = resolution; x < width - resolution; x += resolution) {
       const idx = y * width + x;
       const current = gray[idx];
-      const left = gray[y * width + (x - 1)];
-      const right = gray[y * width + (x + 1)];
-      const top = gray[(y - 1) * width + x];
-      const bottom = gray[(y + 1) * width + x];
+      const left    = gray[y * width + (x - 1)];
+      const right   = gray[y * width + (x + 1)];
+      const top     = gray[(y - 1) * width + x];
+      const bottom  = gray[(y + 1) * width + x];
       const isEdge =
-        Math.abs(current - left) > edgeThreshold ||
-        Math.abs(current - right) > edgeThreshold ||
-        Math.abs(current - top) > edgeThreshold ||
+        Math.abs(current - left)   > edgeThreshold ||
+        Math.abs(current - right)  > edgeThreshold ||
+        Math.abs(current - top)    > edgeThreshold ||
         Math.abs(current - bottom) > edgeThreshold;
       pixels.push(isEdge);
     }
@@ -40,3 +40,6 @@ self.onmessage = async (e) => {
   // Pošleme data zpět
   self.postMessage({ pixels, width: matrixWidth });
 };
+
+// Aby modul měl default export (nutné pro import s ?worker)
+export default null;

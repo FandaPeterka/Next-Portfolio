@@ -1,9 +1,7 @@
-"use client";
 import React, { useRef, useEffect, useState, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import scrollIndicatorData from "../data/dataScrollIndicator";
-import "./ScrollIndicator.css";
 
 const ScrollIndicator = ({ text = scrollIndicatorData.defaultText }) => {
   const { t } = useTranslation();
@@ -42,9 +40,7 @@ const ScrollIndicator = ({ text = scrollIndicatorData.defaultText }) => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(observerCallback, { threshold: 0.5 });
-    if (indicatorRef.current) {
-      observer.observe(indicatorRef.current);
-    }
+    if (indicatorRef.current) observer.observe(indicatorRef.current);
     return () => observer.disconnect();
   }, [observerCallback]);
 
@@ -68,10 +64,15 @@ const ScrollIndicator = ({ text = scrollIndicatorData.defaultText }) => {
   }, [isVisible]);
 
   return (
-    <div ref={indicatorRef} className="scroll-indicator" role="complementary" aria-label="Scroll Down Indicator">
+    <div
+      ref={indicatorRef}
+      className="scroll-indicator"
+      role="status"
+      aria-live="polite"
+    >
       {isVisible && (
         <>
-          <div className="scroll-indicator__icon" ref={iconRef}>
+          <div className="scroll-indicator__icon" ref={iconRef} aria-hidden="true">
             {arrowSvg}
           </div>
           <div className="scroll-indicator__text" ref={textRef}>
@@ -83,4 +84,4 @@ const ScrollIndicator = ({ text = scrollIndicatorData.defaultText }) => {
   );
 };
 
-export default React.memo(ScrollIndicator);
+export default ScrollIndicator;

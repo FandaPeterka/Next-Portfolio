@@ -1,162 +1,184 @@
 {
-    "app": {
-      "sections": [
-        { "label": "Welcome" },
-        { "label": "Introduction" },
-        { "label": "Technology" },
-        { "label": "Experience" },
-        { "label": "Projects" },
-        { "label": "Contact" }
-      ],
-      "scrollIndicatorText": "Welcome! I'm Fanda."
+  "app": {
+    "sections": [
+      { "label": "Welcome" },
+      { "label": "Introduction" },
+      { "label": "Technologies" },
+      { "label": "Experiences" },
+      { "label": "Projects" },
+      { "label": "Contact" }
+    ],
+    "scrollIndicatorText": "Welcome! I'm Fanda."
+  },
+  "appTexts": {
+    "ledMatrixText": "Welcome, Fanda",
+    "scrollIndicators": [
+      "Hi! I'm Fanda."
+    ]
+  },
+  "cards": [
+    {
+      "title": "About Me",
+      "description": "My name is František Peterka, I'm 23 years old. I am an IT specialist and web application developer."
     },
-    "appTexts": {
-      "ledMatrixText": "Welcome, Fanda",
-      "scrollIndicators": [
-        "Welcome! I'm Fanda.",
-        "I Love Technology.",
-        "I Study Software Development."
+    {
+      "title": "Frontend",
+      "description": "I create responsive user interfaces using React and Next.js."
+    },
+    {
+      "title": "Backend",
+      "description": "I develop secure and scalable backends using Node.js, Express.js, and MongoDB."
+    },
+    {
+      "title": "Web",
+      "description": "I primarily work in the field of web applications."
+    },
+    {
+      "title": "Student",
+      "description": "I study software development and enjoy learning new technologies."
+    },
+    {
+      "title": "IT",
+      "description": "I have experience in managing Windows systems, network administration, and automation."
+    }
+  ],
+  "contactForm": {
+    "labels": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message"
+    },
+    "placeholders": {
+      "name": "Your name",
+      "email": "Your email",
+      "message": "Your message"
+    },
+    "feedback": {
+      "success": "Email was sent successfully!",
+      "errorPrefix": "Error sending email: "
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 František Peterka. All rights reserved."
+  },
+  "scrollIndicator": {
+    "defaultText": "Scroll down"
+  },
+  "navbar": {
+    "brandIcon": "/developer.png",
+    "brandText": "Fanda",
+    "brandSubText": "JS Developer",
+    "separator": ">>>"
+  },
+  "projects": [
+    {
+      "name": "List Management App",
+      "description": "A comprehensive solution for managing lists and databases. The application offers list management, the ability to create and edit items, filtering, and statistics."
+    },
+    {
+      "name": "PowerShell Scripting",
+      "description": "This project utilizes PowerShell scripting for automation."
+    },
+    {
+      "name": "BoostApp",
+      "description": "My first web application where I learned the fundamentals of web development."
+    }
+  ],
+  "tech": {
+    "0": {
+      "title": "CSS",
+      "description": "I use advanced CSS techniques (Flexbox, Grid, animations) to create responsive, modern, and aesthetically appealing web designs that ensure a great user experience across devices."
+    },
+    "1": {
+      "title": "Three.js",
+      "description": "Using Three.js, I create interactive 3D visualizations and animations directly in the browser, enriching websites with dynamic and engaging 3D elements."
+    },
+    "2": {
+      "title": "Figma",
+      "description": "In Figma, I design modern user interfaces and interactive prototypes, support team collaboration, and create visually attractive designs that reflect current UI/UX trends."
+    },
+    "3": {
+      "title": "Git",
+      "description": "With Git, I efficiently manage code versions, collaborate in teams, and maintain project history, ensuring smooth development and secure software deployment."
+    },
+    "4": {
+      "title": "HTML",
+      "description": "I create semantically correct and accessible web pages using HTML, improving SEO and ensuring a consistent content structure for search engines and users."
+    },
+    "5": {
+      "title": "JavaScript",
+      "description": "I use JavaScript to create dynamic and interactive web applications, mastering both basic and advanced concepts for smooth and responsive development."
+    },
+    "6": {
+      "title": "MongoDB",
+      "description": "I design flexible and high-performance NoSQL database solutions with MongoDB, enabling efficient management of large data sets and easy scalability of applications."
+    },
+    "7": {
+      "title": "Node.js",
+      "description": "With Node.js, I create robust and scalable backends and APIs that support fast communication between client and server and ensure high performance of web applications."
+    },
+    "8": {
+      "title": "React",
+      "description": "Using React, I design modern and dynamic frontend applications with a component-based approach, which simplifies state management and the development of interactive user interfaces."
+    },
+    "9": {
+      "title": "PowerShell",
+      "description": "I use PowerShell as a scripting tool for automating administrative tasks and system management, especially in Windows environments, significantly streamlining IT infrastructure operations and maintenance."
+    },
+    "10": {
+      "title": "Next.js",
+      "description": "Next.js is a React framework that enables server-side rendering and static site generation. With it, I create fast, SEO-optimized web applications with an improved user experience."
+    },
+    "11": {
+      "title": "TypeScript",
+      "description": "With TypeScript, I extend JavaScript's capabilities with static typing, increasing code safety, simplifying maintenance, and minimizing runtime errors in applications."
+    }
+  },
+  "experiences": {
+    "0": {
+      "title": "Unicorn University",
+      "name": "Unicorn University",
+      "description": "I am currently intensively studying programming with a focus on web development technologies.",
+      "date": "2023 - 2026",
+      "skills": [
+        "#JavaScript",
+        "#TypeScript",
+        "#Node.js",
+        "#Design",
+        "#HTML",
+        "#CSS",
+        "#React",
+        "#SQL",
+        "#MongoDB",
+        "#NodeRED",
+        "#Agile",
+        "#Business English"
       ]
     },
-    "cards": [
-      {
-        "title": "Frontend Developer",
-        "description": "I build responsive user interfaces using modern technologies."
-      },
-      {
-        "title": "Web Developer",
-        "description": "I develop scalable and efficient web applications."
-      },
-      {
-        "title": "Solution Seeker",
-        "description": "I enjoy solving complex problems through creative ideas."
-      },
-      {
-        "title": "Lifelong Learner",
-        "description": "I continuously learn and adapt to new technologies."
-      },
-      {
-        "title": "Lifelong Learner",
-        "description": "I continuously learn and adapt to new technologies."
-      },
-      {
-        "title": "Lifelong Learner",
-        "description": "I continuously learn and adapt to new technologies."
-      }
-    ],
-    "contactForm": {
-      "labels": {
-        "name": "Name",
-        "email": "Email",
-        "message": "Message"
-      },
-      "placeholders": {
-        "name": "Your Name",
-        "email": "Your Email",
-        "message": "Your Message"
-      },
-      "feedback": {
-        "success": "Your email was sent successfully!",
-        "errorPrefix": "Error sending email: "
-      }
+    "1": {
+      "title": "IT Specialist",
+      "name": "IT Specialist",
+      "description": "As an IT Specialist focusing on on-premise management of Windows servers and networks, I am responsible for managing and optimizing Windows systems, maintaining network infrastructure, and frequently using PowerShell to automate and simplify processes.",
+      "date": "2023 - Present",
+      "skills": [
+        "#Windows",
+        "#Network Infrastructure",
+        "#Windows Server",
+        "#PowerShell",
+        "#Simulation",
+        "#Remote Management"
+      ]
     },
-    "footer": {
-      "copyright": "© 2025 Frantisek Peterka. All rights reserved."
-    },
-    "scrollIndicator": {
-      "defaultText": "Scroll Down"
-    },
-    "navbar": {
-      "brandIcon": "/developer.png",
-      "brandText": "Fanda",
-      "brandSubText": "JS Developer",
-      "separator": ">>>"
-    },
-    "projects": [
-      {
-        "name": "List Management Project",
-        "description": "A solution for managing lists and databases."
-      },
-      {
-        "name": "PowerShell Project",
-        "description": "This project uses PowerShell scripting for automation."
-      },
-      {
-        "name": "BoostApp Project",
-        "description": "A mobile application to accelerate business processes."
-      }
-    ],
-    "tech": {
-      "0": {
-        "title": "CSS",
-        "description": "Cascading Style Sheets (CSS) are used to define the appearance and formatting of web pages."
-      },
-      "1": {
-        "title": "Docker",
-        "description": "Docker is a containerization platform that simplifies the process of creating, delivering, and running applications."
-      },
-      "2": {
-        "title": "Figma",
-        "description": "Figma is a powerful design and prototyping tool for real-time collaboration."
-      },
-      "3": {
-        "title": "Git",
-        "description": "Git is a distributed version control system that helps developers track code changes."
-      },
-      "4": {
-        "title": "HTML",
-        "description": "HTML (HyperText Markup Language) is the fundamental markup language for creating web pages."
-      },
-      "5": {
-        "title": "JavaScript",
-        "description": "JavaScript is a versatile programming language that enables interactivity on web pages."
-      },
-      "6": {
-        "title": "MongoDB",
-        "description": "MongoDB is a NoSQL database known for its scalability and performance."
-      },
-      "7": {
-        "title": "Node.js",
-        "description": "Node.js allows you to run JavaScript on the server side and build fast, scalable applications."
-      },
-      "8": {
-        "title": "React",
-        "description": "React is a popular library for building interactive user interfaces."
-      },
-      "9": {
-        "title": "Redux",
-        "description": "Redux is a predictable state container for JavaScript applications, often used with React."
-      },
-      "10": {
-        "title": "Tailwind CSS",
-        "description": "Tailwind CSS is a utility-first framework for rapid UI development."
-      },
-      "11": {
-        "title": "TypeScript",
-        "description": "TypeScript is a strictly typed superset of JavaScript that adds static typing and modern features."
-      }
-    },
-    "experiences": {
-      "0": {
-        "title": "Unicorn University",
-        "name": "Unicorn University",
-        "description": "Description of the experience at Unicorn University – Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "date": "01/01/2020",
-        "skills": ["#communication", "#management", "#design"]
-      },
-      "1": {
-        "title": "IT Specialist",
-        "name": "IT Specialist",
-        "description": "Description of the experience as an IT Specialist – Vivamus luctus urna sed urna ultricies ac tempor dui sagittis.",
-        "date": "15/06/2021",
-        "skills": ["#programming", "#debugging", "#networking"]
-      },
-      "2": {
-        "title": "University of Defense",
-        "name": "University of Defense",
-        "description": "Description of the experience at the University of Defense – In condimentum facilisis porta.",
-        "date": "30/09/2022",
-        "skills": ["#strategy", "#analysis", "#research"]
-      }
+    "2": {
+      "title": "Defense University",
+      "name": "Defense University",
+      "description": "I studied Electrical Engineering. In three semesters, I achieved excellent results (average grade 1.0). Although I had to interrupt my studies in the fourth semester due to health reasons, I gained strong technical and analytical foundations that continue to support my career in IT.",
+      "date": "2021 - 2023",
+      "skills": [
+        "#Mathematics",
+        "#Physics",
+        "#Electrical Engineering"
+      ]
     }
   }
+}
