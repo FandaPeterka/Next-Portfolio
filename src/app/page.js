@@ -1,41 +1,44 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import Navbar            from "@components/Navbar";
-import Tech3DIcons       from "@components/Tech3DIcons";
-import LedMatrix         from "@components/LedMatrix";
-import ScrollIndicator   from "@components/ScrollIndicator";
-import CardsComponent    from "@components/CardsComponent";
+import Navbar from "@components/Navbar";
+import Tech3DIcons from "@components/Tech3DIcons";
+import LedMatrix from "@components/LedMatrix";
+import ScrollIndicator from "@components/ScrollIndicator";
+import CardsComponent from "@components/CardsComponent";
 import HorizontalTimeline from "@components/HorizontalTimeline";
-import ProjectScreens    from "@components/ProjectScreens";
-import ParticleNetwork   from "@components/ParticleNetwork";
-import Footer            from "@components/Footer";
-import appData           from "@data/dataApp";
+import ProjectScreens from "@components/ProjectScreens";
+import ParticleNetwork from "@components/ParticleNetwork";
+import Footer from "@components/Footer";
+import appData from "@data/dataApp";
 
-import gsap   from "gsap";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslation } from "react-i18next";
-
-gsap.registerPlugin(ScrollTrigger);
 
 /* ---------------- SectionHeading ---------------- */
 const SectionHeading = ({ text, mb = "0.3rem" }) => {
   const r = useRef(null);
+
   useEffect(() => {
-    r.current &&
-      gsap.fromTo(
-        r.current,
-        { x: -100, skewX: -8, opacity: 0 },
-        {
-          x: 0,
-          skewX: 0,
-          opacity: 1,
-          duration: 0.9,
-          ease: "expo.out",
-          scrollTrigger: { trigger: r.current, start: "top 85%" },
-        }
-      );
+    // register only in the browser
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (!r.current) return;
+    gsap.fromTo(
+      r.current,
+      { x: -100, skewX: -8, opacity: 0 },
+      {
+        x: 0,
+        skewX: 0,
+        opacity: 1,
+        duration: 0.9,
+        ease: "expo.out",
+        scrollTrigger: { trigger: r.current, start: "top 85%" },
+      }
+    );
   }, []);
+
   return (
     <h2
       ref={r}
@@ -61,13 +64,12 @@ const Spacer = ({ h = "3rem" }) => <div aria-hidden style={{ height: h }} />;
 export default function Home() {
   const { t } = useTranslation();
 
-  /* --- refs sekcí --- */
-  const welcomeRef      = useRef(null);
+  const welcomeRef = useRef(null);
   const introductionRef = useRef(null);
-  const techStackRef    = useRef(null);
-  const experienceRef   = useRef(null);
-  const projectsRef     = useRef(null);
-  const contactRef      = useRef(null);
+  const techStackRef = useRef(null);
+  const experienceRef = useRef(null);
+  const projectsRef = useRef(null);
+  const contactRef = useRef(null);
 
   const [activeSection, setActiveSection] = useState(0);
   const [matrixEnabled, setMatrixEnabled] = useState(true);
@@ -81,7 +83,6 @@ export default function Home() {
     { label: appData.sections[5].label, ref: contactRef },
   ];
 
-  /* --- highlight logika pro navbar --- */
   useEffect(() => {
     const obs = new IntersectionObserver(() => {}, {
       rootMargin: "-80px 0px 0px 0px",
@@ -90,8 +91,7 @@ export default function Home() {
     sections.forEach(({ ref }) => ref.current && obs.observe(ref.current));
 
     const update = () => {
-      let best = 0;
-      let min  = Infinity;
+      let best = 0, min = Infinity;
       sections.forEach(({ ref }, idx) => {
         const rect = ref.current?.getBoundingClientRect();
         if (rect) {
@@ -102,13 +102,17 @@ export default function Home() {
       setActiveSection(best);
     };
 
-    let t;
-    const onScroll = () => { clearTimeout(t); t = setTimeout(update, 120); };
+    let tId;
+    const onScroll = () => {
+      clearTimeout(tId);
+      tId = setTimeout(update, 120);
+    };
     window.addEventListener("scroll", onScroll);
-    return () => { window.removeEventListener("scroll", onScroll); obs.disconnect(); };
-  }, []);
-
-  /* ----------------------------------------------------------------- */
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      obs.disconnect();
+    };
+  }, [sections]);
 
   return (
     <div className="App">
@@ -119,23 +123,22 @@ export default function Home() {
         onToggleMatrix={() => setMatrixEnabled((s) => !s)}
       />
 
-      {/* FIXED POZADÍ */}
+      {/* FIXED BACKGROUND */}
       <div style={{ position: "fixed", inset: 0, zIndex: -1 }} aria-hidden>
         <LedMatrix activeSection={activeSection} showDots={matrixEnabled} />
       </div>
 
-{/* Welcome */}
-<div
-  ref={welcomeRef}
-  style={{
-    /* minimálně 0.5rem, ideálně až 10% výšky viewportu, maximálně 2rem */
-    marginTop: "clamp(0.5rem, 10vh, 2rem)",
-    position: "relative",
-    zIndex: 1,
-  }}
->
-  <ScrollIndicator text={appData.scrollIndicatorText} />
-</div>
+      {/* Welcome */}
+      <div
+        ref={welcomeRef}
+        style={{
+          marginTop: "clamp(0.5rem, 10vh, 2rem)",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <ScrollIndicator text={appData.scrollIndicatorText} />
+      </div>
 
       <Spacer />
 
