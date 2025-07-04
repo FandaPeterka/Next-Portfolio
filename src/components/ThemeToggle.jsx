@@ -16,7 +16,7 @@ const THEMES = [
 ];
 
 const DOT_DESKTOP = 12;
-const DOT_MOBILE  = 46;
+const DOT_MOBILE  = 36;
 
 export default function ThemeToggle() {
   const { theme, changeTheme } = useContext(ThemeContext);

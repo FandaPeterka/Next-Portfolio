@@ -3,15 +3,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import * as THREE from "three";
-import { CSS3DRenderer, CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
+import {
+  CSS3DRenderer,
+  CSS3DObject
+} from "three/examples/jsm/renderers/CSS3DRenderer";
 import CameraControls from "camera-controls";
-import { BiMove, BiBlock } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
 import { FaStar } from "react-icons/fa";
+
 import techData from "../data/dataTech3DIcons";
 import TechCard from "./TechCard";
 import ControlButtons from "./ControlButtons";
 import FourDirectionalWaves from "./FourDirectionalWaves";
+import MovementToggleButton from "./MovementToggleButton";
 
 // Animace
 import {
@@ -23,29 +27,29 @@ import {
 // Nutné pro CameraControls
 CameraControls.install({ THREE });
 
+/* ------------------------------------------------------------------------ */
+/*  HLAVNÍ KOMPONENTY                                                       */
+/* ------------------------------------------------------------------------ */
+
 function Tech3DIconsInternal({ handleRestart, wavesAlreadyShown }) {
   const { t } = useTranslation();
   const [isTouchDevice, setIsTouchDevice] = useState(false);
-  // Výchozí layout = "sphere"
   const [activeLayout, setActiveLayout] = useState("sphere");
-  // Index vybrané karty (nebo null)
   const [selectedTech, setSelectedTech] = useState(null);
-  // Stav povolení/zakázání pohybu
   const [isMovementEnabled, setIsMovementEnabled] = useState(false);
 
-  // Refs na scénu
+  /* ----------------------------- Refs ---------------------------------- */
   const mountRef = useRef(null);
   const cameraRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);
   const cameraControlsRef = useRef(null);
 
-  // Všechny 3D objekty (karty)
+  /* ------------------------ 3D objekty & cíle -------------------------- */
   const objects = useRef([]);
-  // Cílové pozice pro jednotlivé layouty: table, sphere, helix
   const targets = useRef({ table: [], sphere: [], helix: [] });
 
-  // Přepnutí layoutu – animuje se nový layout
+  /* ----------------------- Přepnutí layoutu ---------------------------- */
   const transform = (targetList, duration) => {
     animateTransform(
       objects.current,
@@ -57,18 +61,24 @@ function Tech3DIconsInternal({ handleRestart, wavesAlreadyShown }) {
     );
   };
 
-  // Klik na kartu – vybere kartu
+  /* --------------------------- Výběr karty ----------------------------- */
   const selectCard = (index) => {
     setSelectedTech(index);
-    animateSelect(objects.current, index, rendererRef.current, sceneRef.current, cameraRef.current);
+    animateSelect(
+      objects.current,
+      index,
+      rendererRef.current,
+      sceneRef.current,
+      cameraRef.current
+    );
   };
 
-  // Klik na Back – vrací vybranou kartu do aktuálně aktivního layoutu (activeLayout)
+  /* ------------------------- Reset výběru ------------------------------ */
   const resetSelection = (callback) => {
     animateReset(
       objects.current,
       targets.current,
-      activeLayout, // Použije se aktuální layout
+      activeLayout,
       selectedTech,
       rendererRef.current,
       sceneRef.current,
@@ -80,10 +90,9 @@ function Tech3DIconsInternal({ handleRestart, wavesAlreadyShown }) {
     );
   };
 
-  // Přepnutí layoutu pomocí tlačítek
+  /* ----------------------- Změna layoutu ------------------------------- */
   const handleLayoutChange = (newLayout) => {
     if (selectedTech !== null) {
-      // Nejdříve resetovat vybranou kartu do aktuálního layoutu
       resetSelection(() => {
         setActiveLayout(newLayout);
         transform(targets.current[newLayout], 1500);
@@ -94,28 +103,25 @@ function Tech3DIconsInternal({ handleRestart, wavesAlreadyShown }) {
     }
   };
 
-  // Přepínání povolení pohybu
-  const toggleMovement = () => {
-    setIsMovementEnabled((prev) => !prev);
-  };
+  /* ----------------------- Přepnutí pohybu ----------------------------- */
+  const toggleMovement = () => setIsMovementEnabled((prev) => !prev);
 
-useEffect(() => {
-  // dotykové displeje: pointer = coarse, hover = none
-  const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
+  /* --------------------- Detekce touch zařízení ------------------------ */
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
 
-  const update = () => {
-    const touch = mq.matches;
-    setIsTouchDevice(touch);
-    setIsMovementEnabled(!touch);   // na desktopu (non-touch) rovnou zapni pohyb
-  };
+    const update = () => {
+      const touch = mq.matches;
+      setIsTouchDevice(touch);
+      setIsMovementEnabled(!touch); // desktop = rovnou povoleno
+    };
 
-  update();                               // inicializace
-  mq.addEventListener("change", update);  // reaguje na změnu orientace / resize
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
-  return () => mq.removeEventListener("change", update);
-}, []);
-
-  // Vytvoření scény – inicializace tříd a objektů
+  /* ------------------------- Inicializace scény ------------------------ */
   useEffect(() => {
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -129,18 +135,18 @@ useEffect(() => {
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    // Responsivní parametry
+    // Parametry
     const isSmallScreen = width < 600;
     const sphereRadius = isSmallScreen ? 150 : 200;
     const ringRadius = isSmallScreen ? 150 : 200;
     const spacingX = isSmallScreen ? 70 : 100;
     const spacingY = isSmallScreen ? 90 : 120;
 
-    // Vypočítané pozice pro sphere (výchozí rozložení)
     const l = techData.length;
     const spherePositions = [];
     const vector = new THREE.Vector3();
 
+    // Pozice pro sphere
     for (let i = 0; i < l; i++) {
       const phi = Math.acos(-1 + (2 * i) / l);
       const theta = Math.sqrt(l * Math.PI) * phi;
@@ -151,18 +157,16 @@ useEffect(() => {
 
     // Vytváření karet
     const handleCardClick = (i) => {
-      if (selectedTech == null) {
-        selectCard(i);
-      }
+      if (selectedTech == null) selectCard(i);
     };
 
     techData.forEach((tech, i) => {
-      // HTML container karty
+      // HTML kontejner
       const container = document.createElement("div");
       container.className = "element";
       container.addEventListener("click", () => handleCardClick(i));
 
-      // React root pro TechCard
+      // React root pro kartu
       const root = ReactDOM.createRoot(container);
       root.render(
         <TechCard
@@ -173,9 +177,8 @@ useEffect(() => {
         />
       );
 
-      // Vytvoření CSS3DObject
+      // CSS3D objekt a pivot
       const cssObject = new CSS3DObject(container);
-      // Pivot – výchozí pozice je v rozložení sphere
       const pivot = new THREE.Object3D();
       pivot.position.copy(spherePositions[i]);
       pivot.add(cssObject);
@@ -184,7 +187,7 @@ useEffect(() => {
       scene.add(pivot);
       objects.current.push(pivot);
 
-      // Cílová pozice pro layout "table"
+      // Cíl pro layout "table"
       const tableX = (i % 4) * spacingX - (3 * spacingX) / 2;
       const tableY = -Math.floor(i / 4) * spacingY + 80;
       const tableTarget = new THREE.Object3D();
@@ -192,9 +195,9 @@ useEffect(() => {
       targets.current.table.push(tableTarget);
     });
 
-    // Nastavení cílových pozic pro rozložení "sphere" a "helix"
+    // Sphere & Helix cíle
     for (let i = 0; i < l; i++) {
-      // Sphere cíl
+      // Sphere
       const phi = Math.acos(-1 + (2 * i) / l);
       const theta = Math.sqrt(l * Math.PI) * phi;
       const sphereObj = new THREE.Object3D();
@@ -203,7 +206,7 @@ useEffect(() => {
       sphereObj.lookAt(vector);
       targets.current.sphere.push(sphereObj);
 
-      // Helix cíl
+      // Helix
       const helixTheta = i * 0.523 + Math.PI;
       const helixObj = new THREE.Object3D();
       helixObj.position.setFromCylindricalCoords(ringRadius, helixTheta, 0);
@@ -233,10 +236,10 @@ useEffect(() => {
     cameraControls.maxDistance = 2000;
     cameraControls.smoothTime = 0.1;
     cameraControls.draggingSmoothTime = 0.2;
-    cameraControls.enabled = isMovementEnabled; // výchozí stav pohybu
+    cameraControls.enabled = isMovementEnabled;
     cameraControlsRef.current = cameraControls;
 
-    // Renderovací smyčka
+    // Animace
     const clock = new THREE.Clock();
     function animate() {
       requestAnimationFrame(animate);
@@ -246,7 +249,7 @@ useEffect(() => {
     }
     animate();
 
-    // Responzivita
+    // Resize
     const handleResize = () => {
       const scaleFactor = Math.max(0.8, window.innerWidth / 1920);
       objects.current.forEach((pivot, i) => {
@@ -266,7 +269,7 @@ useEffect(() => {
     window.addEventListener("resize", handleResize);
     handleResize();
 
-    // Cleanup při odmountování
+    // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
       if (renderer.domElement && renderer.domElement.parentNode) {
@@ -279,42 +282,21 @@ useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Upravujeme povolení pohybu při změně stavu
+  /* ------------- Re-enable / disable pohyb při změně stavu ------------- */
   useEffect(() => {
     if (cameraControlsRef.current) {
       cameraControlsRef.current.enabled = isMovementEnabled;
     }
   }, [isMovementEnabled]);
 
-  // Renderování komponenty
+  /* ----------------------------- Render -------------------------------- */
   return (
     <div className="wrapper" style={{ position: "relative" }}>
-      {/* Tlačítko pro povolení/zakázání pohybu */}
-{isTouchDevice && (
-  <button
-    onClick={toggleMovement}
-    style={{
-      position: "absolute",
-      top: "40px",
-      left: "50%",
-      transform: "translateX(-50%)",
-      zIndex: 10,
-      padding: "8px 20px",
-      borderRadius: "8px",
-      background: "#222",
-      color: "#fff",
-      border: isMovementEnabled ? "2px solid #4CAF50" : "2px solid #444",
-      boxShadow: isMovementEnabled ? "0 0 10px #4CAF50" : "none",
-      display: "flex",
-      alignItems: "center",
-      gap: "6px",
-      cursor: "pointer"
-    }}
-  >
-    {isMovementEnabled ? <BiMove size={18} /> : <BiBlock size={18} />}
-    {isMovementEnabled ? "Moving enabled" : "Moving disabled"}
-  </button>
-)}
+      {/* Svislé tlačítko na pravém okraji */}
+      <MovementToggleButton
+        isMovementEnabled={isMovementEnabled}
+        toggleMovement={toggleMovement}
+      />
 
       <div ref={mountRef} className="stage" />
 
@@ -332,14 +314,16 @@ useEffect(() => {
           <p>{t(techData[selectedTech].description)}</p>
           <p>
             <strong>{t("experience")}: </strong>
-            {techData[selectedTech].experience} {" "}
+            {techData[selectedTech].experience}{" "}
             {techData[selectedTech].experience === 1 ? t("year") : t("years")}
           </p>
           <p>
             <strong>{t("skill")}: </strong>
-            {Array.from({ length: techData[selectedTech].rating }).map((_, i) => (
-              <FaStar key={i} />
-            ))}
+            {Array.from({ length: techData[selectedTech].rating }).map(
+              (_, i) => (
+                <FaStar key={i} />
+              )
+            )}
           </p>
         </div>
       )}
@@ -349,7 +333,7 @@ useEffect(() => {
   );
 }
 
-// Obalová komponenta – restart (unmount/mount)
+/* ------------------------ Wrapper pro restart -------------------------- */
 export default function Tech3DIcons() {
   const [resetKey, setResetKey] = useState(0);
   const [wavesShown, setWavesShown] = useState(false);
