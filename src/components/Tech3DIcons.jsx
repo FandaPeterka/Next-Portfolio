@@ -25,7 +25,7 @@ CameraControls.install({ THREE });
 
 function Tech3DIconsInternal({ handleRestart, wavesAlreadyShown }) {
   const { t } = useTranslation();
-
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   // Výchozí layout = "sphere"
   const [activeLayout, setActiveLayout] = useState("sphere");
   // Index vybrané karty (nebo null)
@@ -98,6 +98,22 @@ function Tech3DIconsInternal({ handleRestart, wavesAlreadyShown }) {
   const toggleMovement = () => {
     setIsMovementEnabled((prev) => !prev);
   };
+
+useEffect(() => {
+  // dotykové displeje: pointer = coarse, hover = none
+  const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
+
+  const update = () => {
+    const touch = mq.matches;
+    setIsTouchDevice(touch);
+    setIsMovementEnabled(!touch);   // na desktopu (non-touch) rovnou zapni pohyb
+  };
+
+  update();                               // inicializace
+  mq.addEventListener("change", update);  // reaguje na změnu orientace / resize
+
+  return () => mq.removeEventListener("change", update);
+}, []);
 
   // Vytvoření scény – inicializace tříd a objektů
   useEffect(() => {
@@ -274,29 +290,31 @@ function Tech3DIconsInternal({ handleRestart, wavesAlreadyShown }) {
   return (
     <div className="wrapper" style={{ position: "relative" }}>
       {/* Tlačítko pro povolení/zakázání pohybu */}
-<button
-  onClick={toggleMovement}
-  style={{
-    position: "absolute",
-    top: "40px",                // posun dolů
-    left: "50%",
-    transform: "translateX(-50%)",
-    zIndex: 10,
-    padding: "8px 20px",
-    borderRadius: "8px",
-    background: "#222",
-    color: "#fff",
-    border: isMovementEnabled ? "2px solid #4CAF50" : "2px solid #444",
-    boxShadow: isMovementEnabled ? "0 0 10px #4CAF50" : "none",
-    display: "flex",
-    alignItems: "center",
-    gap: "3px",
-    cursor: "pointer"
-  }}
->
-  {isMovementEnabled ? <BiMove size={18} /> : <BiBlock size={18} />}
-  {isMovementEnabled ? "Moving enabled" : "Moving disabled"}
-</button>
+{isTouchDevice && (
+  <button
+    onClick={toggleMovement}
+    style={{
+      position: "absolute",
+      top: "40px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      zIndex: 10,
+      padding: "8px 20px",
+      borderRadius: "8px",
+      background: "#222",
+      color: "#fff",
+      border: isMovementEnabled ? "2px solid #4CAF50" : "2px solid #444",
+      boxShadow: isMovementEnabled ? "0 0 10px #4CAF50" : "none",
+      display: "flex",
+      alignItems: "center",
+      gap: "6px",
+      cursor: "pointer"
+    }}
+  >
+    {isMovementEnabled ? <BiMove size={18} /> : <BiBlock size={18} />}
+    {isMovementEnabled ? "Moving enabled" : "Moving disabled"}
+  </button>
+)}
 
       <div ref={mountRef} className="stage" />
 
