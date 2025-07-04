@@ -1,11 +1,11 @@
-"use client"; // Klientský kód v Next.js
-
+"use client";               // Klientský kód v Next.js
 import React, { useEffect, useState, useRef } from "react";
 import config from "../data/dataLedMatrix";
 
-// Cache pro výsledky LED matice
+/* ------------------------------ cache ------------------------------ */
 const ledMatrixCache = new Map();
 
+/* ------------------------- helper – load image --------------------- */
 async function loadImageAndGetData(imgSrc, height, resolution, blurAmount) {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -16,130 +16,108 @@ async function loadImageAndGetData(imgSrc, height, resolution, blurAmount) {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       canvas.height = height * resolution;
-      canvas.width = canvas.height * aspect;
-      if (blurAmount > 0) {
-        ctx.filter = `blur(${blurAmount}px)`;
-      }
+      canvas.width  = canvas.height * aspect;
+      if (blurAmount > 0) ctx.filter = `blur(${blurAmount}px)`;
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      resolve(imageData);
+      resolve(ctx.getImageData(0, 0, canvas.width, canvas.height));
     };
-    img.onerror = (err) => reject(err);
+    img.onerror = reject;
   });
 }
 
+/* ========================== SingleLedMatrix ======================== */
 function SingleLedMatrix({ configOverrides }) {
   const containerRef = useRef(null);
-  const dotRefs = useRef([]);
-  const [initialized, setInitialized] = useState(false);
-  const [finalPixels, setFinalPixels] = useState([]);
-  const [matrixWidth, setMatrixWidth] = useState(0);
+  const dotRefs      = useRef([]);
 
-  const mergedConfig = { ...config.global, ...configOverrides };
-  const { src, height, resolution, dotSize, gap, edgeThreshold, blurAmount } = mergedConfig;
+  const [initialized, setInit]   = useState(false);
+  const [finalPixels, setPixels] = useState([]);
+  const [matrixWidth, setW]      = useState(0);
 
-  const [ledOnColor, setLedOnColor] = useState("#00ffff");
-  const [ledOffColor, setLedOffColor] = useState("transparent");
+  const {
+    src, height, resolution, dotSize, gap, edgeThreshold, blurAmount,
+  } = { ...config.global, ...configOverrides };
 
+  /* --- barvy podle CSS custom props --- */
+  const [ledOnColor,  setOn ] = useState("#00ffff");
+  const [ledOffColor, setOff] = useState("transparent");
   useEffect(() => {
-    const updateLEDColors = () => {
-      const on =
-        getComputedStyle(document.documentElement)
-          .getPropertyValue("--led-on-color")
-          .trim() || "#00ffff";
-      const off =
-        getComputedStyle(document.documentElement)
-          .getPropertyValue("--led-off-color")
-          .trim() || "transparent";
-      setLedOnColor(on);
-      setLedOffColor(off);
+    const update = () => {
+      const cs   = getComputedStyle(document.documentElement);
+      setOn (cs.getPropertyValue("--led-on-color").trim()  || "#00ffff");
+      setOff(cs.getPropertyValue("--led-off-color").trim() || "transparent");
     };
-    updateLEDColors();
-    const obs = new MutationObserver(updateLEDColors);
-    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => obs.disconnect();
+    update();
+    const mo = new MutationObserver(update);
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => mo.disconnect();
   }, []);
 
+  /* --- data přes worker / cache --- */
   useEffect(() => {
-    const cacheKey = JSON.stringify({ src, height, resolution, blurAmount, edgeThreshold });
-    if (ledMatrixCache.has(cacheKey)) {
-      const { pixels, matrixWidth } = ledMatrixCache.get(cacheKey);
-      setFinalPixels(pixels);
-      setMatrixWidth(matrixWidth);
-      return;
+    const key = JSON.stringify({ src, height, resolution, blurAmount, edgeThreshold });
+    if (ledMatrixCache.has(key)) {
+      const { pixels, matrixWidth } = ledMatrixCache.get(key);
+      setPixels(pixels); setW(matrixWidth); return;
     }
-
     (async () => {
       try {
         const imageData = await loadImageAndGetData(src, height, resolution, blurAmount);
-        // Vytvoříme instanci workeru s URL odpovídající umístění ve veřejné složce
         const worker = new Worker("/workers/LedMatrixWorker.js", { type: "module" });
-        worker.onmessage = (e) => {
-          const { pixels, width: w } = e.data;
-          ledMatrixCache.set(cacheKey, { pixels, matrixWidth: w });
-          setFinalPixels(pixels);
-          setMatrixWidth(w);
-          worker.terminate();
+        worker.onmessage = ({ data: { pixels, width } }) => {
+          ledMatrixCache.set(key, { pixels, matrixWidth: width });
+          setPixels(pixels); setW(width); worker.terminate();
         };
         worker.postMessage({ imageData, resolution, edgeThreshold });
-      } catch (err) {
-        console.error("Load image error:", err);
-      }
+      } catch (err) { console.error(err); }
     })();
   }, [src, height, resolution, blurAmount, edgeThreshold]);
 
+  /* --- vytvoření DOM mřížky --- */
   useEffect(() => {
     if (!containerRef.current || !finalPixels.length) return;
     dotRefs.current = [];
     containerRef.current.innerHTML = "";
 
     finalPixels.forEach(() => {
-      const dot = document.createElement("div");
-      dot.className = "ledmatrix-dot";
-      dot.style.width = dotSize + "px";
-      dot.style.height = dotSize + "px";
-      dot.style.backgroundColor = ledOffColor;
-      containerRef.current.appendChild(dot);
-      dotRefs.current.push(dot);
+      const d = document.createElement("div");
+      d.className = "ledmatrix-dot";
+      d.style.width  = `${dotSize}px`;
+      d.style.height = `${dotSize}px`;
+      d.style.backgroundColor = ledOffColor;
+      containerRef.current.appendChild(d);
+      dotRefs.current.push(d);
     });
 
-    containerRef.current.style.display = "grid";
+    containerRef.current.style.display              = "grid";
     containerRef.current.style.gridTemplateColumns = `repeat(${matrixWidth}, ${dotSize}px)`;
-    containerRef.current.style.gridTemplateRows = `repeat(${height}, ${dotSize}px)`;
-    containerRef.current.style.gap = gap + "px";
+    containerRef.current.style.gridTemplateRows    = `repeat(${height}, ${dotSize}px)`;
+    containerRef.current.style.gap                 = `${gap}px`;
 
-    setInitialized(true);
+    setInit(true);
   }, [finalPixels, dotSize, ledOffColor, gap, matrixWidth, height]);
 
+  /* --- blikání ----------------------------------------------------- */
   useEffect(() => {
     if (!initialized || !dotRefs.current.length) return;
-    let blinkInterval;
-    const startTime = Date.now();
-
-    const doBlink = () => {
-      const now = Date.now();
-      const elapsed = now - startTime;
+    const start = Date.now();
+    const tick  = () => {
+      const elapsed = Date.now() - start;
       if (elapsed > 800) {
-        clearInterval(blinkInterval);
-        finalPixels.forEach((isOn, i) => {
-          const dot = dotRefs.current[i];
-          if (!dot) return;
-          dot.style.backgroundColor = isOn ? ledOnColor : ledOffColor;
+        finalPixels.forEach((on, i) => {
+          dotRefs.current[i].style.backgroundColor = on ? ledOnColor : ledOffColor;
         });
         return;
       }
-      const total = dotRefs.current.length;
-      for (let i = 0; i < total; i++) {
+      dotRefs.current.forEach((dot, i) => {
         if (finalPixels[i] && Math.random() < 0.05) {
-          const dot = dotRefs.current[i];
-          const curr = dot.style.backgroundColor;
-          dot.style.backgroundColor = (curr === ledOnColor) ? ledOffColor : ledOnColor;
+          const c = dot.style.backgroundColor;
+          dot.style.backgroundColor = c === ledOnColor ? ledOffColor : ledOnColor;
         }
-      }
+      });
     };
-
-    blinkInterval = setInterval(doBlink, 150);
-    return () => clearInterval(blinkInterval);
+    const id = setInterval(tick, 150);
+    return () => clearInterval(id);
   }, [initialized, finalPixels, ledOnColor, ledOffColor]);
 
   return (
@@ -149,20 +127,23 @@ function SingleLedMatrix({ configOverrides }) {
   );
 }
 
-export default function LedMatrix({ activeSection }) {
+/* =============================== LedMatrix ========================= */
+/**
+ * Props:
+ *   – activeSection (index)  → určuje, kterou předlohu zobrazit
+ *   – showDots (bool) [default = true] → zap / vyp mřížku
+ */
+export default function LedMatrix({ activeSection, showDots = true }) {
   const { images } = config;
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [idx, setIdx] = useState(0);
 
-  useEffect(() => {
-    const nextIndex = activeSection % images.length;
-    setCurrentIndex(nextIndex);
-  }, [activeSection, images]);
+  useEffect(() => setIdx(activeSection % images.length), [activeSection, images]);
 
-  if (!images[currentIndex]) return null;
+  if (!images[idx]) return null;
 
   return (
     <div className="ledmatrix-wrapper" aria-hidden="true">
-      <SingleLedMatrix configOverrides={images[currentIndex]} />
+      {showDots && <SingleLedMatrix configOverrides={images[idx]} />}
     </div>
   );
 }

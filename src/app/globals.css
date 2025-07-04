@@ -738,10 +738,12 @@ body {
   border-radius: 4px;
   font-size: 1rem;
 }
+
 .mobile-menu-icon {
   cursor: pointer;
-  color: #fff;
+  background-color: transparent;
   display: flex;
+  color: var(--color-white);
   align-items: center;
 }
 .mobile-dropdown {
