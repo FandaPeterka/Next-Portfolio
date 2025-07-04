@@ -18,7 +18,7 @@ const FourDirectionalWaves = ({ isOverlay }) => {
 
   const triggerPulse = useCallback((count = 0) => {
     // Po 2. sérii vln schováme celý kontejner (bez re-renderu).
-    if (count >= 2) {
+    if (count >= 1) {
       setTimeout(() => {
         if (containerRef.current) {
           containerRef.current.style.display = 'none';
