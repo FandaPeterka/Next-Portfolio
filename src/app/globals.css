@@ -1633,3 +1633,10 @@ body {
 /* ========================================================
    7. KONEC SOUBORU
    ======================================================== */
+
+/* === ScrollIndicator – bublina ====================================== */
+@media (max-width: 600px) {
+  .si-figure {
+    top: -15% !important;   /* posuň ještě o kousek níž (v procentech ↑) */
+  }
+}
