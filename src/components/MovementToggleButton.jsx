@@ -4,18 +4,20 @@ import React, { useContext } from "react";
 import { BiMove, BiBlock } from "react-icons/bi";
 import { ThemeContext } from "../contexts/ThemeContext";
 
-/* světlé motivy – potřebují černý text */
 const LIGHT_THEMES = ["midnight-purple", "glacier-night", "mocha-space"];
 
 /**
- * Zmenšené svislé tlačítko pro zapnutí / vypnutí pohybu kamery.
- * Nyní NEpokrývá celou výšku wrapperu – má pevný odsazení 60 px
- * od horního i dolního okraje komponenty.
+ * Vertikální přepínač pohybu kamery.
+ * – zobrazuje se **pouze** na dotykových zařízeních (isTouchDevice === true)
+ * – výška zkrácena: 80 px odsazení shora i zdola
  */
 export default function MovementToggleButton({
   isMovementEnabled,
   toggleMovement,
+  isTouchDevice,
 }) {
+  if (!isTouchDevice) return null; // PC / notebook → nic nevracej
+
   const { theme } = useContext(ThemeContext);
   const isLightTheme = LIGHT_THEMES.includes(theme);
 
@@ -28,10 +30,10 @@ export default function MovementToggleButton({
       onClick={toggleMovement}
       style={{
         position: "absolute",
-        top: "80px",      // 60 px od horního okraje
-        bottom: "80px",   // 60 px od spodního okraje
+        top: "80px",
+        bottom: "80px",
         right: 0,
-        width: "44px",    // úzké, ale stále klikatelné
+        width: "45px",
         zIndex: 10,
         background: bgVar,
         color: fg,
@@ -51,8 +53,6 @@ export default function MovementToggleButton({
       title={isMovementEnabled ? "Disable movement" : "Enable movement"}
     >
       {isMovementEnabled ? <BiMove size={24} /> : <BiBlock size={24} />}
-
-      {/* vertikální popis */}
       <span
         style={{
           writingMode: "vertical-rl",
