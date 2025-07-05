@@ -87,51 +87,51 @@
   "tech": {
     "0": {
       "title": "CSS",
-      "description": "I use advanced CSS techniques (Flexbox, Grid, animations) to create responsive, modern, and aesthetically appealing web designs that ensure a great user experience across devices."
+      "description": "I use Flexbox, Grid, and animations to craft responsive, polished UIs."
     },
     "1": {
       "title": "Three.js",
-      "description": "Using Three.js, I create interactive 3D visualizations and animations directly in the browser, enriching websites with dynamic and engaging 3D elements."
+      "description": "I build interactive 3D visuals in the browser with Three.js."
     },
     "2": {
       "title": "Figma",
-      "description": "In Figma, I design modern user interfaces and interactive prototypes, support team collaboration, and create visually attractive designs that reflect current UI/UX trends."
+      "description": "In Figma I design modern UIs and prototypes for smooth team collaboration."
     },
     "3": {
       "title": "Git",
-      "description": "With Git, I efficiently manage code versions, collaborate in teams, and maintain project history, ensuring smooth development and secure software deployment."
+      "description": "Git powers my version control and seamless team workflows."
     },
     "4": {
       "title": "HTML",
-      "description": "I create semantically correct and accessible web pages using HTML, improving SEO and ensuring a consistent content structure for search engines and users."
+      "description": "I write semantic, accessible HTML for better SEO and user experience."
     },
     "5": {
       "title": "JavaScript",
-      "description": "I use JavaScript to create dynamic and interactive web applications, mastering both basic and advanced concepts for smooth and responsive development."
+      "description": "JavaScript lets me create dynamic, interactive web apps."
     },
     "6": {
       "title": "MongoDB",
-      "description": "I design flexible and high-performance NoSQL database solutions with MongoDB, enabling efficient management of large data sets and easy scalability of applications."
+      "description": "I design flexible, scalable NoSQL databases with MongoDB."
     },
     "7": {
       "title": "Node.js",
-      "description": "With Node.js, I create robust and scalable backends and APIs that support fast communication between client and server and ensure high performance of web applications."
+      "description": "Node.js enables fast, scalable back-end services and APIs."
     },
     "8": {
       "title": "React",
-      "description": "Using React, I design modern and dynamic frontend applications with a component-based approach, which simplifies state management and the development of interactive user interfaces."
+      "description": "With React I build component-driven, interactive front-end apps."
     },
     "9": {
       "title": "PowerShell",
-      "description": "I use PowerShell as a scripting tool for automating administrative tasks and system management, especially in Windows environments, significantly streamlining IT infrastructure operations and maintenance."
+      "description": "PowerShell automates system administration on Windows."
     },
     "10": {
       "title": "Next.js",
-      "description": "Next.js is a React framework that enables server-side rendering and static site generation. With it, I create fast, SEO-optimized web applications with an improved user experience."
+      "description": "Next.js delivers fast, SEO-friendly sites with SSR and SSG."
     },
     "11": {
       "title": "TypeScript",
-      "description": "With TypeScript, I extend JavaScript's capabilities with static typing, increasing code safety, simplifying maintenance, and minimizing runtime errors in applications."
+      "description": "TypeScript boosts code safety through static typing."
     }
   },
   "experiences": {
