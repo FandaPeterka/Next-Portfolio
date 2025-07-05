@@ -999,7 +999,7 @@ body {
 }
 @media (max-width: 768px) {
   .scroll-indicator {
-    padding-bottom: 1rem;
+    padding-bottom: 7rem;
   }
   .scroll-indicator__icon {
     margin-bottom: 0.5rem;
@@ -1634,12 +1634,7 @@ body {
    7. KONEC SOUBORU
    ======================================================== */
 
-/* === ScrollIndicator – bublina ====================================== */
-@media (max-width: 600px) {
-  .si-figure {
-    top: -15% !important;   /* posuň ještě o kousek níž (v procentech ↑) */
-  }
-}
+
 
 /* --- Posun šipky na nejmenších obrazovkách --- */
 @media (max-width: 600px) {
