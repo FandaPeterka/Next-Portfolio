@@ -29,7 +29,7 @@ const DARK_THEMES = new Set([
 ]);
 
 const logoForTheme = (theme) =>
-  DARK_THEMES.has(theme) ? "/developer2.png" : "/developer.png";
+  DARK_THEMES.has(theme) ? "/developer2.webp" : "/developer1.webp";
 
 const GRAY = "#666";
 

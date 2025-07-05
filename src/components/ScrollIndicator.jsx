@@ -31,8 +31,8 @@ export default function ScrollIndicator() {
 
   /* assets podle motivu */
   const arrowColor = DARK_TEXT_THEMES.includes(theme) ? "#000" : "#fff";
-  const imgSrc     = DARK_TEXT_THEMES.includes(theme) ? "/mac-me2.png"  : "/mac-me.png";
-  const bubbleSrc  = DARK_TEXT_THEMES.includes(theme) ? "/textbubble2.png" : "/textbubble.png";
+  const imgSrc     = DARK_TEXT_THEMES.includes(theme) ? "/mac-me2.webp"  : "/mac-me.webp";
+  const bubbleSrc  = DARK_TEXT_THEMES.includes(theme) ? "/textbubble2.webp" : "/textbubble.webp";
 
   /* ► přepočet vertikálního posunu */
   useEffect(() => {

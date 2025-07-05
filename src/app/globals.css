@@ -609,7 +609,7 @@ body {
 }
 .language-dropdown {
   position: absolute;
-  top: 90px;
+  top: 33px;
   left: 0;
   margin-top: 0.5rem;
   background-color: var(--color-bg-primary);
@@ -748,7 +748,7 @@ body {
 }
 .mobile-dropdown {
   position: absolute;
-  top: 80px;
+  top: 75px;
   right: 1rem;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
