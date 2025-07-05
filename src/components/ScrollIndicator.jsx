@@ -92,7 +92,7 @@ export default function ScrollIndicator() {
          style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
       
       {/* ▼  wrapper obrázků — PŘIDÁNA TŘÍDA */}
-      <div className="si-figure si-bubble"
+      <div className="si-figure"
            style={{
              position: "relative",
              display: "inline-block",
@@ -123,7 +123,13 @@ export default function ScrollIndicator() {
       </div>
 
       {/* pulsující šipka */}
-      <div ref={iconRef} aria-hidden="true">{arrowSvg}</div>
+      <div
+        ref={iconRef}
+        className="si-arrow"
+        aria-hidden="true"
+      >
+        {arrowSvg}
+     </div>
     </div>
   );
 }

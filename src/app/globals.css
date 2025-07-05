@@ -1640,3 +1640,11 @@ body {
     top: -15% !important;   /* posuň ještě o kousek níž (v procentech ↑) */
   }
 }
+
+/* --- Posun šipky na nejmenších obrazovkách --- */
+@media (max-width: 600px) {
+  .si-arrow {
+    /* posuň o 40px nahoru – upravte podle potřeby */
+    margin-top: 5% !important;
+  }
+}

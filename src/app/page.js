@@ -132,7 +132,7 @@ export default function Home() {
       <div
         ref={welcomeRef}
         style={{
-          marginTop: "clamp(0.5rem, 10vh, 2rem)",
+          marginTop: "clamp(0rem, 10vh, 0rem)",
           position: "relative",
           zIndex: 1,
         }}
