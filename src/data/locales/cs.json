@@ -2,11 +2,11 @@
     "app": {
       "sections": [
         { "label": "Vítejte" },
-        { "label": "Úvod" },
-        { "label": "Technologie" },
-        { "label": "Zkušenosti" },
-        { "label": "Projekty" },
-        { "label": "Kontakt" }
+        { "label": "O Mně" },
+        { "label": "Tech Stack" },
+        { "label": "Zkušenosti & Vzdělání" },
+        { "label": "Vybrané Projekty" },
+        { "label": "Pojďme Spolupracovat" }
       ],
       "scrollIndicatorText": "Vítejte! Jsem Fanda."
     },
@@ -140,21 +140,21 @@
       "0": {
         "title": "Unicorn University",
         "name": "Unicorn University",
-        "description": "Aktuálně se intenzivně věnuji studiu programování, se zaměřením na technologie pro webový vývoj.",
+        "description": "Studuji softwarový vývoj se zaměřením na moderní vývoj webových aplikací.",
         "date": "2023 - 2026",
         "skills": ["#JavaScript", "#TypeScript","#Node.js" , "#Design", "#HTML", "#CSS", "#React", "#SQL", "#MongoDB", "#NodeRED", "#Agile", "#Business English"]
       },
       "1": {
         "title": "IT Specialista",
         "name": "IT Specialista",
-        "description": "Jako IT specialista se zaměřením na on-premise správu windows serverů a sítě. Mám na starosti správu a optimalizaci systémů windows, správu síťové infrastruktury a často využívám PowerShell k automatizaci a zjednodušení procesů.",
+        "description": "IT specialista působící v armádním prostředí, zaměřený na správu systémů a sítí.",
         "date": "2023 - Přítomnost",
         "skills": ["#Windows", "#Síťová Infrastruktura", "#Windows Server","#PowerShell", "#Simulace", "#Vzdálená Správa"]
       },
       "2": {
         "title": "Univerzita obrany",
         "name": "Univerzita obrany",
-        "description": "Studoval jsem obor Elektrotechnika. Ve třech semestrech jsem dosáhl vynikajících výsledků (průměr 1.0). Ačkoliv jsem musel ve čtvrtém semestru kvůli zdravotním důvodům studium přerušit, získal jsem silné technické a analytické základy, které nadále podporují mou kariéru v IT.",
+        "description": "Studoval jsem elektrotechniku (elektroniku, matematika, fyzika). Během tří semestrů jsem dosahoval výborných výsledků (ekvivalent GPA 4.0). Ve čtvrtém semestru jsem studium ze zdravotních důvodů ukončil.",
         "date": "2021 - 2023",
         "skills": ["#Matematika", "#Fyzika", "#Elektrotechnika"]
       }

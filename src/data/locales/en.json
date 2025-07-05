@@ -1,12 +1,12 @@
 {
   "app": {
     "sections": [
-      { "label": "Welcome" },
-      { "label": "Introduction" },
-      { "label": "Technologies" },
-      { "label": "Experiences" },
-      { "label": "Projects" },
-      { "label": "Contact" }
+        { "label": "Welcome" },
+        { "label": "About Me" },
+        { "label": "Tech Stack" },
+        { "label": "Experience & Education" },
+        { "label": "Highlighted Projects" },
+        { "label": "Let's Work Together" }
     ],
     "scrollIndicatorText": "Welcome! I'm Fanda."
   },
@@ -138,7 +138,7 @@
     "0": {
       "title": "Unicorn University",
       "name": "Unicorn University",
-      "description": "I am currently intensively studying programming with a focus on web development technologies.",
+      "description": "Studying software engineering with a focus on modern web development.",
       "date": "2023 - 2026",
       "skills": [
         "#JavaScript",
@@ -158,7 +158,7 @@
     "1": {
       "title": "IT Specialist",
       "name": "IT Specialist",
-      "description": "As an IT Specialist focusing on on-premise management of Windows servers and networks, I am responsible for managing and optimizing Windows systems, maintaining network infrastructure, and frequently using PowerShell to automate and simplify processes.",
+      "description": "IT Specialist working in a military environment, focused on system and network administration.",
       "date": "2023 - Present",
       "skills": [
         "#Windows",
@@ -172,7 +172,7 @@
     "2": {
       "title": "Defense University",
       "name": "Defense University",
-      "description": "I studied Electrical Engineering. In three semesters, I achieved excellent results (average grade 1.0). Although I had to interrupt my studies in the fourth semester due to health reasons, I gained strong technical and analytical foundations that continue to support my career in IT.",
+      "description": "Studied Electrical Engineering (electronics, mathematics, physics). Achieved top results with a GPA equivalent of 4.0 across three semesters. I had to leave in the fourth semester due to health reasons.",
       "date": "2021 - 2023",
       "skills": [
         "#Mathematics",

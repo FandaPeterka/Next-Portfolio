@@ -264,7 +264,7 @@ p {
 }
 .experience-date {
   color: var(--color-white);
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
 }
 .overlay-wrapper {
@@ -273,37 +273,37 @@ p {
 /* Další definice .description-text pro horizontální timeline */
 .description-text {
   color: var(--color-white);
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   margin-bottom: 1rem;
 }
 .skill {
   background: var(--color-skill-bg);
-  font-size: 1rem;
+  font-size: 1.3rem;
   padding: 5px 15px;
   border-radius: 5px;
   margin: 0.5rem 5px;
 }
 @media (max-width: 768px) {
   .description-text {
-    font-size: 1rem;
+    font-size: 1.4rem;
     width: 90%;
   }
   .skill {
-    font-size: 1rem;
+    font-size: 1.3rem;
     padding: 5px 8px;
   }
 }
 @media (max-width: 480px) {
   .experience-icon {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
   }
   .experience-icon img {
-    width: 60%;
-    height: 60%;
+    width: 80%;
+    height: 80%;
   }
   .experience-date {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
   }
   .date-container {
     top: 26%;
@@ -532,7 +532,7 @@ body {
 }
 .experience-date {
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 .overlay-wrapper {
   width: 100%;
@@ -554,24 +554,24 @@ body {
   width: 80%;
   text-align: center;
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin-top: -30px;
 }
 .skill {
   display: inline-block;
   margin: 0 5px;
-  font-size: 1rem;
+  font-size: 1.3rem;
   padding: 5px 15px;
   border-radius: 5px;
   margin-block-start: 10px;
 }
 @media (max-width: 768px) {
   .description-text {
-    font-size: 1rem;
+    font-size: 1.3rem;
     width: 90%;
   }
   .skill {
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding: 5px 8px;
   }
 }
@@ -892,7 +892,7 @@ body {
 .project-description {
   padding: 10px;
   color: #eee;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.6;
 }
 .project-title-container,
@@ -908,7 +908,7 @@ body {
 .project-paragraph {
   margin: 0;
   line-height: 1.6;
-  font-size: 1rem;
+  font-size: 1.3rem;
 }
 .project-technology-tag {
   padding: 4px 8px;
@@ -939,10 +939,10 @@ body {
 }
 @media (max-width: 480px) {
   .project-title-container h3 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
   .project-paragraph {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
   }
   .screen-container {
     max-width: 100%;
@@ -999,7 +999,7 @@ body {
 }
 @media (max-width: 768px) {
   .scroll-indicator {
-    padding-bottom: 7rem;
+    padding-bottom: 4rem;
   }
   .scroll-indicator__icon {
     margin-bottom: 0.5rem;
@@ -1049,7 +1049,7 @@ body {
   border-radius: 8px;
   z-index: 10;
   max-width: 60%;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.6;
 }
 @media (max-width: 600px) {
@@ -1058,6 +1058,7 @@ body {
     right: 0;
     max-width: 100%;
     width: 100%;
+    font-size: 1.1rem;
     border-radius: 0;
   }
 }
@@ -1094,13 +1095,13 @@ body {
   padding: 1rem;
 }
 .card-icon {
-  width: 30px;
-  height: 30px;
+  width: 45px;
+  height: 45px;
   margin-bottom: 0.25rem;
   object-fit: contain;
 }
 .card-title {
-  font-size: 1rem; /* zvětšeno z 0.7rem */
+  font-size: 0.8rem; /* zvětšeno z 0.7rem */
   font-weight: bold;
   white-space: nowrap;
   text-align: center;
@@ -1115,14 +1116,14 @@ body {
 
 @media (max-width: 700px) {
   .card-tilt {
-    width: 80px;
+    width: 85px;
     height: 100px;
   }
 }
 
 @media (max-width: 480px) {
   .card-tilt {
-    width: 65px;
+    width: 70px;
     height: 85px;
   }
   .card-icon {
@@ -1130,7 +1131,7 @@ body {
     height: 25px;
   }
   .card-title {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -1329,20 +1330,20 @@ body {
   transform: rotateY(180deg);
 }
 .icon-image {
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   margin-bottom: 1rem;
   object-fit: contain;
 }
 .title-text {
-  font-size: 1.25rem;
+  font-size: 1.6rem;
   font-weight: bold;
   white-space: nowrap;
   text-align: center;
   margin-bottom: 1rem;
 }
 .description-text {
-  font-size: 1rem;
+  font-size: 1.35rem;
   color: #e2e8f0;
   text-align: center;
   margin-bottom: 1rem;
@@ -1361,10 +1362,10 @@ body {
     height: 200px;
   }
   .title-text {
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
   .description-text {
-    font-size: 1rem;
+    font-size: 1.18rem;
   }
 }
 
@@ -1394,7 +1395,7 @@ body {
 .custom-input,
 .custom-textarea {
   padding: 15px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   border: 1px solid var(--color-white);
   border-radius: 4px;
   box-sizing: border-box;
@@ -1430,10 +1431,15 @@ body {
   margin-top: 20px;
 }
 .custom-social a img {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
   transition: transform 0.3s;
+  cursor: pointer;
+  border: 2px solid #fff; /* bílý rámeček */
 }
+
 .custom-social a:hover img {
   transform: scale(1.1);
 }
@@ -1640,6 +1646,6 @@ body {
 @media (max-width: 600px) {
   .si-arrow {
     /* posuň o 40px nahoru – upravte podle potřeby */
-    margin-top: 5% !important;
+    margin-top: 10% !important;
   }
 }
