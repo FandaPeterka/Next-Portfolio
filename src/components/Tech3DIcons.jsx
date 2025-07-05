@@ -39,6 +39,7 @@ function Tech3DIconsInternal({ handleRestart, wavesAlreadyShown }) {
   const [isMovementEnabled, setIsMovementEnabled] = useState(false);
 
   /* ----------------------------- Refs ---------------------------------- */
+  const wrapperRef        = useRef(null);
   const mountRef = useRef(null);
   const cameraRef = useRef(null);
   const sceneRef = useRef(null);
@@ -107,6 +108,34 @@ function Tech3DIconsInternal({ handleRestart, wavesAlreadyShown }) {
   const toggleMovement = () => setIsMovementEnabled((prev) => !prev);
 
   /* --------------------- Detekce touch zařízení ------------------------ */
+
+  /* --- AUTO-přepnutí na „table“, když je sekce vidět ------------------- */
+useEffect(() => {
+  if (!wrapperRef.current) return;
+
+  let done = false;
+  const obs = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting && !done && objects.current.length) {
+        done = true;                       // spustíme jen jednou
+        setActiveLayout("table");
+        animateTransform(
+          objects.current,
+          targets.current.table,
+          rendererRef.current,
+          sceneRef.current,
+          cameraRef.current,
+          1500
+        );
+      }
+    },
+    { threshold: 0.25 }                    // 25 % viditelnosti
+  );
+
+  obs.observe(wrapperRef.current);
+  return () => obs.disconnect();
+}, []);                                     // ← žádné závislosti
+
   useEffect(() => {
     const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
 
@@ -291,7 +320,7 @@ function Tech3DIconsInternal({ handleRestart, wavesAlreadyShown }) {
 
   /* ----------------------------- Render -------------------------------- */
   return (
-    <div className="wrapper" style={{ position: "relative" }}>
+    <div ref={wrapperRef} className="wrapper" style={{ position: "relative" }}>
       {/* Svislé tlačítko na pravém okraji */}
       <MovementToggleButton
         isMovementEnabled={isMovementEnabled}

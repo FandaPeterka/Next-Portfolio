@@ -1,29 +1,51 @@
 "use client";
-import React, { useState, useRef, Suspense, useMemo, useEffect } from "react";
-import { Canvas, useLoader, useThree, useFrame } from "@react-three/fiber";
-import { Preload, CubeCamera } from "@react-three/drei";
-import CameraControls from "camera-controls";
-import { TextureLoader, Clock, Shape, ShapeGeometry } from "three";
-import * as THREE from "three";
-import gsap from "gsap";
-import Loader from "./Loader";
 
-// Import a inicializace knihovny pro plošná světla
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useMemo,
+  Suspense,
+} from "react";
+import { Canvas, useLoader, useThree, useFrame } from "@react-three/fiber";
+import { Preload, CubeCamera, Html } from "@react-three/drei";
+import CameraControls from "camera-controls";
+import * as THREE from "three";
+import {
+  TextureLoader,
+  Clock,
+  ShapeGeometry,
+  Shape,
+} from "three";
+import gsap from "gsap";
+
+import Loader from "./Loader";                 // fallback % loader
 import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLightUniformsLib";
 RectAreaLightUniformsLib.init();
 
+/* --------------------------------------------------------------------- */
+/* 1.  UTILITKY                                                           */
+/* --------------------------------------------------------------------- */
 CameraControls.install({ THREE });
 
-/**
- * DiffuseGlowLight – komponenta simulující rozptýlené světlo s plynulejším přechodem jasu.
- * Přidána podpora prop `isHeld`, která pomocí GSAP animuje opacity světla.
- *
- * @param {Array<number>} position - Pozice světla ve 3D prostoru.
- * @param {number} size - Velikost (škála) sprite, tedy rozprostření světla.
- * @param {number} intensity - Počáteční intenzita (opacity) světla.
- * @param {string} color - Barva světla ve formátu hex.
- * @param {boolean} isHeld - Příznak, jestli je obrazovka držena (na dotyk/kliknutí).
- */
+/** sleduje <html data-theme="…"> a vrací aktuální theme string */
+const useDocumentTheme = () => {
+  const [theme, setTheme] = useState(
+    document.documentElement.getAttribute("data-theme")
+  );
+  useEffect(() => {
+    const mo = new MutationObserver(() =>
+      setTheme(document.documentElement.getAttribute("data-theme"))
+    );
+    mo.observe(document.documentElement, { attributes: true });
+    return () => mo.disconnect();
+  }, []);
+  return theme;
+};
+
+/* --------------------------------------------------------------------- */
+/* 2.  SVĚTLO – DIFFUSE GLOW                                              */
+/* --------------------------------------------------------------------- */
 const DiffuseGlowLight = ({
   position = [0, 0, 0],
   size = 10,
@@ -33,51 +55,35 @@ const DiffuseGlowLight = ({
 }) => {
   const spriteRef = useRef();
 
+  /* ► rad-grad textura --------------------------------------------------- */
   const glowTexture = useMemo(() => {
     const canvas = document.createElement("canvas");
-    canvas.width = 256;
-    canvas.height = 256;
+    canvas.width = canvas.height = 256;
     const ctx = canvas.getContext("2d");
-
-    const threeColor = new THREE.Color(color);
-    const r = Math.floor(threeColor.r * 255);
-    const g = Math.floor(threeColor.g * 255);
-    const b = Math.floor(threeColor.b * 255);
-
-    // Použijeme rovnoměrné zastávky pro plynulejší změnu jasu
+    const { r, g, b } = new THREE.Color(color);
     const gradient = ctx.createRadialGradient(
-      canvas.width / 2,
-      canvas.height / 2,
-      0,
-      canvas.width / 2,
-      canvas.height / 2,
-      canvas.width / 2
+      128, 128, 0, 128, 128, 128
     );
-    gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 1)`);
-    gradient.addColorStop(0.33, `rgba(${r}, ${g}, ${b}, 0.66)`);
-    gradient.addColorStop(0.66, `rgba(${r}, ${g}, ${b}, 0.33)`);
-    gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-
+    gradient.addColorStop(0,   `rgba(${r * 255},${g * 255},${b * 255},1)`);
+    gradient.addColorStop(0.3, `rgba(${r * 255},${g * 255},${b * 255},.66)`);
+    gradient.addColorStop(0.6, `rgba(${r * 255},${g * 255},${b * 255},.33)`);
+    gradient.addColorStop(1,   `rgba(${r * 255},${g * 255},${b * 255},0)`);
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.needsUpdate = true;
-    return texture;
+    ctx.fillRect(0, 0, 256, 256);
+    return new THREE.CanvasTexture(canvas);
   }, [color]);
 
-  // Při změně stavu isHeld animujeme opacity světla
+  /* ► animujeme opacity podle isHeld ----------------------------------- */
   useEffect(() => {
-    if (spriteRef.current) {
-      const targetOpacity = isHeld ? 0.2 : intensity;
-      gsap.to(spriteRef.current.material, {
-        opacity: targetOpacity,
-        duration: 0.5,
-        ease: "power2.inOut",
-      });
-    }
+    if (!spriteRef.current) return;
+    gsap.to(spriteRef.current.material, {
+      opacity: isHeld ? 0.2 : intensity,
+      duration: 0.4,
+      ease: "power2.inOut",
+    });
   }, [isHeld, intensity]);
 
+  /* ► render ------------------------------------------------------------ */
   return (
     <sprite ref={spriteRef} position={position} scale={[size, size, size]}>
       <spriteMaterial
@@ -85,69 +91,46 @@ const DiffuseGlowLight = ({
         map={glowTexture}
         transparent
         opacity={intensity}
-        blending={THREE.AdditiveBlending}
         depthWrite={false}
+        blending={THREE.AdditiveBlending}
       />
     </sprite>
   );
 };
 
-// Hook pro sledování aktuálního tématu z dokumentu
-const useDocumentTheme = () => {
-  const [docTheme, setDocTheme] = useState(
-    document.documentElement.getAttribute("data-theme")
-  );
-
-  useEffect(() => {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === "data-theme") {
-          setDocTheme(document.documentElement.getAttribute("data-theme"));
-        }
-      });
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-    return () => observer.disconnect();
-  }, []);
-
-  return docTheme;
-};
-
-// Komponenta pro ovládání kamery s použitím CameraControls
+/* --------------------------------------------------------------------- */
+/* 3.  THREE CAMERA CONTROLS (pan-only)                                   */
+/* --------------------------------------------------------------------- */
 function CameraControlsImpl({ disableZoom = true, disableRotate = true }) {
-  const controlsRef = useRef(null);
   const { camera, gl, invalidate } = useThree();
-  const clockRef = useRef(new Clock());
+  const controlsRef = useRef(null);
+  const clock = useRef(new Clock());
 
   useEffect(() => {
     controlsRef.current = new CameraControls(camera, gl.domElement);
+
     if (disableZoom) {
-      controlsRef.current.mouseButtons.wheel = CameraControls.ACTION.NONE;
-      controlsRef.current.touches.two = CameraControls.ACTION.NONE;
+      controlsRef.current.mouseButtons.wheel  = CameraControls.ACTION.NONE;
+      controlsRef.current.touches.two         = CameraControls.ACTION.NONE;
     }
     if (disableRotate) {
-      controlsRef.current.mouseButtons.left = CameraControls.ACTION.NONE;
-      controlsRef.current.touches.one = CameraControls.ACTION.NONE;
+      controlsRef.current.mouseButtons.left   = CameraControls.ACTION.NONE;
+      controlsRef.current.touches.one         = CameraControls.ACTION.NONE;
     }
-    controlsRef.current.mouseButtons.right = CameraControls.ACTION.NONE;
+    controlsRef.current.mouseButtons.right     = CameraControls.ACTION.NONE;
     controlsRef.current.addEventListener("change", invalidate);
-    return () => {
-      controlsRef.current.removeEventListener("change", invalidate);
-    };
+    return () =>
+      controlsRef.current?.removeEventListener("change", invalidate);
   }, [camera, gl, invalidate, disableZoom, disableRotate]);
 
   useFrame(() => {
-    const delta = clockRef.current.getDelta();
-    controlsRef.current?.update(delta);
+    controlsRef.current?.update(clock.current.getDelta());
   });
 
   return null;
 }
 
-// Komponenta umožňující zobrazení dalších vrstev – zde nepoužíváme speciální vrstvy
+/* ► vrstva 0 povolená pro kameru (pro jistotu) */
 function EnableScreenLayer() {
   const { camera } = useThree();
   useEffect(() => {
@@ -156,100 +139,87 @@ function EnableScreenLayer() {
   return null;
 }
 
-const ScreenBox = ({ reverse, imageUrl, dimensions, onHold, onRelease }) => {
-  const meshRef = useRef();
-  const groupRef = useRef();
+/* --------------------------------------------------------------------- */
+/* 4.  SCREEN BOX                                                         */
+/* --------------------------------------------------------------------- */
+const ScreenBox = ({
+  reverse,
+  imageUrl,
+  dimensions,
+  onHold,
+  onRelease,
+  inView = true,           // <<< reaguje na IntersectionObserver
+}) => {
+  const groupRef  = useRef();
+  const texture   = useLoader(TextureLoader, imageUrl);
   const { width, height, depth } = dimensions;
-  const texture = useLoader(TextureLoader, imageUrl);
-  const initialAngle = reverse ? -25 : 25;
-  const initialAngleRad = (initialAngle * Math.PI) / 180;
 
-  // Lokální stavy pro sledování, zda je obrazovka "hoverována", držena či kliknutá
-  const [isHovering, setIsHovering] = useState(false);
-  const [isHeld, setIsHeld] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
+  /* ► stavy interakce --------------------------------------------------- */
+  const [hover, setHover]   = useState(false);
+  const [held,  setHeld]    = useState(false);
 
-  // Efekt pro animaci rotace obrazovky při změně stavů
+  /* ► cílová rotace ----------------------------------------------------- */
+  const baseAngleDeg  = reverse ? -25 : 25;
+  const baseAngleRad  = (baseAngleDeg * Math.PI) / 180;
+
   useEffect(() => {
-    if (groupRef.current) {
-      const targetRotation = (isClicked || isHovering || isHeld) ? 0 : initialAngleRad;
-      gsap.to(groupRef.current.rotation, {
-        y: targetRotation,
-        duration: 0.5,
-        ease: "power2.inOut",
-      });
-    }
-  }, [isHovering, isHeld, isClicked, initialAngleRad]);
+    if (!groupRef.current) return;
+    const shouldFaceUser = inView || hover || held;
+    gsap.to(groupRef.current.rotation, {
+      y: shouldFaceUser ? 0 : baseAngleRad,
+      duration: 0.6,
+      ease: "power2.out",
+    });
+  }, [inView, hover, held, baseAngleRad]);
 
-  // Event handlery pro najetí a opuštění kurzoru
-  const handlePointerOver = () => setIsHovering(true);
-  const handlePointerOut = () => setIsHovering(false);
-
-  // Event handlery pro stisk a uvolnění (pro dotyk/kliknutí)
-  const handlePointerDown = () => {
-    setIsHeld(true);
-    onHold && onHold();
-  };
-
-  const handlePointerUp = () => {
-    setIsHeld(false);
-    onRelease && onRelease();
-  };
-
-  // Handler pro kliknutí – přepíná stav "kliknuto"
-  const handleClick = () => {
-    setIsClicked((prev) => !prev);
-  };
-
-  // Konstrukce geometrie rámečku
+  /* ► bezel geo --------------------------------------------------------- */
   const bezelGeometry = useMemo(() => {
-    const frameThickness = 0.25;
-    const outerWidth = width + frameThickness * 2.5;
-    const outerHeight = height + frameThickness * 2.5;
-    const shape = new THREE.Shape();
-    shape.moveTo(-outerWidth / 2, -outerHeight / 2);
-    shape.lineTo(-outerWidth / 2, outerHeight / 2);
-    shape.lineTo(outerWidth / 2, outerHeight / 2);
-    shape.lineTo(outerWidth / 2, -outerHeight / 2);
-    shape.lineTo(-outerWidth / 2, -outerHeight / 2);
+    const t  = 0.25;                           // tloušťka rámu
+    const ow = width  + t * 2.5;
+    const oh = height + t * 2.5;
 
-    const hole = new THREE.Path();
-    hole.moveTo(-width / 2, -height / 2);
-    hole.lineTo(-width / 2, height / 2);
-    hole.lineTo(width / 2, height / 2);
-    hole.lineTo(width / 2, -height / 2);
-    hole.lineTo(-width / 2, -height / 2);
+    const shape = new Shape()
+      .moveTo(-ow/2, -oh/2)
+      .lineTo(-ow/2,  oh/2)
+      .lineTo( ow/2,  oh/2)
+      .lineTo( ow/2, -oh/2)
+      .lineTo(-ow/2, -oh/2);
+
+    const hole = new THREE.Path()
+      .moveTo(-width/2, -height/2)
+      .lineTo(-width/2,  height/2)
+      .lineTo( width/2,  height/2)
+      .lineTo( width/2, -height/2)
+      .lineTo(-width/2, -height/2);
     shape.holes.push(hole);
-
-    return new THREE.ShapeGeometry(shape);
+    return new ShapeGeometry(shape);
   }, [width, height]);
 
+  /* ► render ------------------------------------------------------------ */
   return (
     <group ref={groupRef}>
-      {/* Hlavní objekt obrazovky */}
+      {/* displej + tělo */}
       <mesh
-        ref={meshRef}
-        onClick={handleClick}  // <-- přidáno pro přepínání rotace po kliknutí
-        onPointerOver={handlePointerOver}
-        onPointerOut={handlePointerOut}
-        onPointerDown={handlePointerDown}
-        onPointerUp={handlePointerUp}
+        onPointerOver={() => setHover(true)}
+        onPointerOut={() => setHover(false)}
+        onPointerDown={() => { setHeld(true);  onHold?.();   }}
+        onPointerUp  ={() => { setHeld(false); onRelease?.();}}
       >
         <boxGeometry args={[width, height, depth]} />
-        {[...Array(6)].map((_, i) => (
+        {Array.from({ length: 6 }).map((_, i) => (
           <meshStandardMaterial
             key={i}
             attach={`material-${i}`}
             color={i === 4 ? "#ffffff" : "#4a5568"}
-            metalness={i === 4 ? 0.2 : 0}
             roughness={i === 4 ? 0.7 : 1}
+            metalness={i === 4 ? 0.2 : 0}
             map={i === 4 ? texture : null}
           />
         ))}
       </mesh>
 
-      {/* Rámeček (bezel) */}
-      <mesh geometry={bezelGeometry} position={[0, 0, depth / 2 + 0.015]}>
+      {/* rámeček */}
+      <mesh geometry={bezelGeometry} position={[0, 0, depth/2 + 0.015]}>
         <meshStandardMaterial
           color={
             getComputedStyle(document.documentElement)
@@ -259,20 +229,18 @@ const ScreenBox = ({ reverse, imageUrl, dimensions, onHold, onRelease }) => {
         />
       </mesh>
 
-      {/* Overlay s odleskem využívajícím CubeCamera */}
+      {/* odlesk */}
       <CubeCamera resolution={128} frames={Infinity}>
         {(envMap) => (
           <mesh
-            position={[0, 0, depth / 2 + 0.02]}
-            onPointerOver={handlePointerOver}
-            onPointerOut={handlePointerOut}
-            onPointerDown={handlePointerDown}
-            onPointerUp={handlePointerUp}
+            position={[0, 0, depth/2 + 0.02]}
+            onPointerOver={() => setHover(true)}
+            onPointerOut={() => setHover(false)}
           >
             <planeGeometry args={[width, height]} />
             <meshPhysicalMaterial
               envMap={envMap}
-              transparent={true}
+              transparent
               opacity={0.4}
               metalness={1}
               roughness={0.01}
@@ -287,29 +255,48 @@ const ScreenBox = ({ reverse, imageUrl, dimensions, onHold, onRelease }) => {
   );
 };
 
+/* --------------------------------------------------------------------- */
+/* 5.  SCREEN CANVAS (export default)                                     */
+/* --------------------------------------------------------------------- */
 const ScreenCanvas = ({ reverse, imageUrls, dimensions }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  /* slideshow ----------------------------------------------------------- */
+  const [idx, setIdx] = useState(0);
   const total = imageUrls.length;
-  const currentImage = imageUrls[currentIndex];
-  // Stav pro sledování, zda je tlačítko drženo (pro synchronizaci otáčení a změny jasu)
-  const [isHeld, setIsHeld] = useState(false);
+  const currentImage = imageUrls[idx];
 
-  const handlePrev = () =>
-    setCurrentIndex((prev) => (prev - 1 + total) % total);
-  const handleNext = () =>
-    setCurrentIndex((prev) => (prev + 1) % total);
+  const prev = () => setIdx((p) => (p - 1 + total) % total);
+  const next = () => setIdx((p) => (p + 1) % total);
 
-  const handleHold = () => setIsHeld(true);
-  const handleRelease = () => setIsHeld(false);
+  /* held state pro světlo ---------------------------------------------- */
+  const [held, setHeld] = useState(false);
 
+  /* intersection observer pro „inView“ ---------------------------------- */
+  const containerRef = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const io = new IntersectionObserver(
+      ([e]) => setInView(e.isIntersecting),
+      { threshold: 0.70 }
+    );
+    io.observe(containerRef.current);
+    return () => io.disconnect();
+  }, []);
+
+  /* render -------------------------------------------------------------- */
   return (
-    <div className="sc-container">
-      <Canvas camera={{ position: [0, 0, 25], fov: 45 }} className="sc-canvas">
+    <div ref={containerRef} className="sc-container">
+      <Canvas
+        className="sc-canvas"
+        camera={{ position: [0, 0, 25], fov: 45 }}
+      >
         <EnableScreenLayer />
-        <Suspense fallback={<Loader />}>
-          <CameraControlsImpl disableZoom={true} disableRotate={true} />
 
-          {/* Zvýšené ambientní osvětlení */}
+        <Suspense fallback={<Loader />}>
+          <CameraControlsImpl disableZoom disableRotate />
+
+          {/* světla */}
           <ambientLight intensity={7} />
           <spotLight
             position={[10, 20, 20]}
@@ -318,37 +305,39 @@ const ScreenCanvas = ({ reverse, imageUrls, dimensions }) => {
             penumbra={0.5}
             castShadow
           />
-
-          {/* Globální světlo s plynulejším přechodem jasu */}
           <DiffuseGlowLight
             position={[0, 0, 25]}
             size={30}
             intensity={0.4}
             color="#ffffff"
-            isHeld={isHeld}
+            isHeld={held}
           />
 
-          {/* Objekt obrazovky */}
+          {/* obrazovka */}
           <ScreenBox
             reverse={reverse}
             imageUrl={currentImage}
             dimensions={dimensions}
-            onHold={handleHold}
-            onRelease={handleRelease}
+            onHold={() => setHeld(true)}
+            onRelease={() => setHeld(false)}
+            inView={inView}
           />
         </Suspense>
+
         <Preload all />
       </Canvas>
+
+      {/* ovládací šipky */}
       <div className="sc-controls">
         <button
-          onClick={handlePrev}
+          onClick={prev}
           className="sc-control-button"
           aria-label="Previous screen"
         >
           &lt;
         </button>
         <button
-          onClick={handleNext}
+          onClick={next}
           className="sc-control-button"
           aria-label="Next screen"
         >
