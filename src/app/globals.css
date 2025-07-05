@@ -999,7 +999,7 @@ body {
 }
 @media (max-width: 768px) {
   .scroll-indicator {
-    padding-bottom: 4rem;
+    padding-bottom: 0rem;
   }
   .scroll-indicator__icon {
     margin-bottom: 0.5rem;
