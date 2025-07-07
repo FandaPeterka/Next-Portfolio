@@ -663,10 +663,27 @@ body {
   box-sizing: border-box;
 }
 
-@media(max-width:600px){
+/* ---------- Mobile ≤600 px ---------- */
+@media (max-width: 550px){
+  /* 1) Zrušit pevný padding a použít flex-box */
+  .ledmatrix-wrapper{
+    padding:200px 180px 0px 0;      /* odsazení shora zůstává, z boků 0 */
+    display:flex;
+    justify-content:flex-start;/* ↞ zarovnat doleva */
+    align-items:center;     /* vertikální střed */
+  }
+
+  /* 2) Kontejner drží 100 % šířky – flex to vycentruje */
+  .single-ledmatrix-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+  }
+
+  /* 3) Zmenšení mřížky zůstává, jen ji necháme ve středu */
   .ledmatrix-grid{
-    transform:scale(.6);      /* případně 0.8 – podle potřeby */
-    transform-origin:top center;
+    transform:scale(.6);
+    transform-origin:center top;   /* pivot uprostřed nahoře */
   }
 }
 
