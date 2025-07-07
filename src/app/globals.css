@@ -175,6 +175,8 @@ body {
   letter-spacing: 0.03rem;
   margin: 0;
   padding: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* Obecné styly nadpisů a odstavců */
