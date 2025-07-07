@@ -315,11 +315,10 @@ p {
 /* --- 3.6 LedMatrix --- */
 .ledmatrix-wrapper {
   background-color: var(--matrix-bg);
-  padding: 1rem;
 }
 .ledmatrix-grid {
   background-color: var(--matrix-bg);
-  padding: 1rem;
+  max-width: 100%;
 }
 
 /* --- 3.7 Navbar & Dropdown --- */
@@ -378,7 +377,6 @@ p {
 /* --- 3.10 Další globální styly --- */
 body {
   color: var(--color-white);
-  padding: 1rem;
 }
 .description {
   margin-bottom: 1rem;
@@ -650,7 +648,6 @@ body {
   width: 100%;
   height: 100vh;
   box-sizing: border-box;
-  padding: 200px 1rem;
 }
 .single-ledmatrix-container {
   display: flex;
@@ -969,8 +966,8 @@ body {
   right: 0;
   display: flex;
   justify-content: space-between;
-  padding: 5% 20%;
 }
+
 .sc-control-button {
   font-size: 1.5rem;
   background: transparent;
@@ -1027,7 +1024,7 @@ body {
 
 /* --- 3.22 Základní nastavení textu, wrapper a interaktivita --- */
 body {
-  color: white;
+  
 }
 .wrapper {
   position: relative;
