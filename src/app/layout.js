@@ -3,7 +3,7 @@ import ClientProviders from "./ClientProviders"; // Cesta dle vašeho aliasu
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
-  title: "František Peterka",
+  title: "František Peterka Portfolio",
   description: "Portfolio aplikace s 3D efekty a interaktivními prvky",
   metadataBase: new URL("https://www.frantisekpeterka.com"), // Nastavte svoji produkční URL
   openGraph: {
