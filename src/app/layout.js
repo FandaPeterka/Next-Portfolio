@@ -1,23 +1,45 @@
+// app/layout.js
 import "./globals.css";
-import ClientProviders from "./ClientProviders"; // Cesta dle vašeho aliasu
+import ClientProviders from "./ClientProviders";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "František Peterka Portfolio",
   description: "Portfolio aplikace s 3D efekty a interaktivními prvky",
-  metadataBase: new URL("https://www.frantisekpeterka.com"), // Nastavte svoji produkční URL
+  metadataBase: new URL("https://www.frantisekpeterka.com"),
   openGraph: {
     title: "František Peterka Portfolio",
-    description: "Portfolio aplikace s 3D efekty a interaktivními prvky představující projekty Františka Peterky.",
+    description:
+      "Portfolio aplikace s 3D efekty a interaktivními prvky představující projekty Františka Peterky.",
     type: "website",
-    // Můžete přidat také `images` pole, pokud máte konkrétní obrázky pro OG.
   },
   twitter: {
     card: "summary_large_image",
     title: "František Peterka Portfolio",
-    description: "Portfolio aplikace s 3D efekty a interaktivními prvky představující projekty Františka Peterky.",
-    // Rovněž lze přidat obrázky pro Twitter.
+    description:
+      "Portfolio aplikace s 3D efekty a interaktivními prvky představující projekty Františka Peterky.",
   },
+  icons: {
+    icon: "/favicon.ico", // fallback .ico
+    icon16: { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    icon32: { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    android: {
+      url: "/android-chrome-192x192.png",
+      sizes: "192x192",
+      type: "image/png",
+    },
+    android512: {
+      url: "/android-chrome-512x512.png",
+      sizes: "512x512",
+      type: "image/png",
+    },
+    shortcut: "/site.webmanifest",
+  },
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#2d3748" },
+  ],
 };
 
 export default function RootLayout({ children }) {
