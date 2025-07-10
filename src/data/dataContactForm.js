@@ -16,16 +16,9 @@ const contactFormData = {
       errorPrefix: "contactForm.feedback.errorPrefix"
     },
     social: [
-      {
-        href: "https://linkedin.com/in/frantisek-peterka-a36142337",
-        alt: "contactForm.social.0.alt",
-        src: "/LinkedIn.svg"
-      },
-      {
-        href: "https://github.com/FandaPeterka",
-        alt: "contactForm.social.1.alt",
-        src: "/GitHub.svg"
-      }
+      { href: "https://github.com/FandaPeterka", type: "github", alt: "GitHub" },
+      { href: "https://www.linkedin.com/in/frantisek-peterka-a36142337/", type: "linkedin", alt: "LinkedIn" },
+      { href: "/cv.pdf", type: "cv", alt: "Download CV", download: true }
     ]
   };
   

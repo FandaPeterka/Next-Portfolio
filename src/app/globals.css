@@ -705,16 +705,19 @@ body {
   display: flex;
   align-items: center;
 }
+
 .navbar-brand img {
   height: 40px;
   margin-right: 0.5rem;
   transform: scaleX(-1);
 }
+
 .navbar-brand p {
   margin: 0;
   font-size: 1rem;
   font-weight: bold;
 }
+
 .navbar-brand .brand-subtext {
   display: none;
 }
@@ -1452,25 +1455,56 @@ html{ overflow-x:hidden; }
   font-weight: bold;
   color: var(--color-white);
 }
+
+/* --- dole přidejte do vašeho global-theme.css --- */
+
+/* 1) Zrušíme výchozí link-blue */
+.custom-social a {
+  color: inherit;        /* dědí barvu z .custom-social */
+  text-decoration: none; /* podle potřeby */
+}
+
+/* 2) Pro jistotu i pro visited */
+.custom-social a:visited {
+  color: inherit;
+}
+
+/* 3) U SVG ikon zajistíme, že cesta/fill bude currentColor */
+.custom-social a .social-icon {
+  color: currentColor;   /* barva rámečku i SVG cesty */
+  border-color: currentColor;
+}
+
+/* 4) Už jste měli: */
 .custom-social {
   display: flex;
   justify-content: center;
   gap: 20px;
   margin-top: 20px;
+  color: var(--color-white);
 }
-.custom-social a img {
+[data-theme="midnight-purple"] .custom-social,
+[data-theme="glacier-night"]   .custom-social,
+[data-theme="mocha-space"]     .custom-social {
+  color: var(--color-black);
+}
+.custom-social a img,
+.custom-social a .social-icon {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  object-fit: cover;
-  transition: transform 0.3s;
+  transition: transform 0.3s, border-color 0.3s;
   cursor: pointer;
-  border: 2px solid #fff; /* bílý rámeček */
+  border: 2px solid currentColor;
+  box-sizing: content-box;
+  padding: 5px;
 }
 
-.custom-social a:hover img {
+.custom-social a:hover img,
+.custom-social a:hover .social-icon {
   transform: scale(1.1);
 }
+
 @media (max-width: 768px) {
   .custom-form-container {
     padding: 20px;

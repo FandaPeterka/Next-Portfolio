@@ -13,6 +13,7 @@
     "@react-three/drei": "^9.0.0",
     "@react-three/fiber": "^8.9.1",
     "@react-three/postprocessing": "1.4.0",
+    "@vercel/analytics": "^1.5.0",
     "camera-controls": "^2.10.0",
     "emailjs-com": "^3.2.0",
     "gsap": "^3.12.7",
