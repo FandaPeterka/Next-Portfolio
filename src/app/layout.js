@@ -4,14 +4,19 @@ import ClientProviders from "./ClientProviders";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
+  metadataBase: new URL("https://www.frantisekpeterka.com"),
+
   title: "František Peterka Portfolio",
   description: "Portfolio aplikace s 3D efekty a interaktivními prvky",
-  metadataBase: new URL("https://www.frantisekpeterka.com"),
+
   openGraph: {
+    url: "https://www.frantisekpeterka.com/",
+    siteName: "František Peterka Portfolio",
+    locale: "cs_CZ",
+    type: "website",
     title: "František Peterka Portfolio",
     description:
       "Portfolio aplikace s 3D efekty a interaktivními prvky představující projekty Františka Peterky.",
-    type: "website",
     images: [
       {
         url: "/social-preview.png",
@@ -21,13 +26,22 @@ export const metadata = {
       },
     ],
   },
+
   twitter: {
     card: "summary_large_image",
+    site: "@tvojeTwitterUživJméno",          // pokud máš svůj účet
+    creator: "@tvojeTwitterUživJméno",      // tvé vlastní jméno
     title: "František Peterka Portfolio",
     description:
       "Portfolio aplikace s 3D efekty a interaktivními prvky představující projekty Františka Peterky.",
-    images: ["/social-preview.png"],
+    images: [
+      {
+        url: "/social-preview.png",
+        alt: "František Peterka Portfolio Preview",
+      },
+    ],
   },
+
   icons: {
     icon: "/favicon.ico",
     icon16: { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
@@ -45,6 +59,7 @@ export const metadata = {
     },
     shortcut: "/site.webmanifest",
   },
+
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     { media: "(prefers-color-scheme: dark)", color: "#2d3748" },
