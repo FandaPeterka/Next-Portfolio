@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "npm install --legacy-peer-deps && next build",
-    "start": "next start",
-    "lint": "next lint",
-    "postbuild": "next-sitemap"
-  },
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "postbuild": "next-sitemap"
+},
   "dependencies": {
     "@react-three/drei": "^9.0.0",
     "@react-three/fiber": "^8.9.1",
