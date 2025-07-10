@@ -12,15 +12,24 @@ export const metadata = {
     description:
       "Portfolio aplikace s 3D efekty a interaktivními prvky představující projekty Františka Peterky.",
     type: "website",
+    images: [
+      {
+        url: "/social-preview.png",
+        width: 1200,
+        height: 630,
+        alt: "František Peterka Portfolio Preview",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "František Peterka Portfolio",
     description:
       "Portfolio aplikace s 3D efekty a interaktivními prvky představující projekty Františka Peterky.",
+    images: ["/social-preview.png"],
   },
   icons: {
-    icon: "/favicon.ico", // fallback .ico
+    icon: "/favicon.ico",
     icon16: { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     icon32: { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },

@@ -1,12 +1,11 @@
-"use client";
-
+// use client
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { useTranslation }   from "react-i18next";
-import { FiMenu, FiX }      from "react-icons/fi";
-import { BsLightbulbFill }  from "react-icons/bs";
+import { useTranslation } from "react-i18next";
+import { FiMenu, FiX } from "react-icons/fi";
+import { BsLightbulbFill } from "react-icons/bs";
 
-import navbarData       from "../data/dataNavbar";
-import ThemeToggle      from "./ThemeToggle";
+import navbarData from "../data/dataNavbar";
+import ThemeToggle from "./ThemeToggle";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { ThemeContext } from "../contexts/ThemeContext";
 
@@ -28,10 +27,7 @@ const DARK_THEMES = new Set([
   "mocha-space",
 ]);
 
-const logoForTheme = (theme) =>
-  DARK_THEMES.has(theme) ? "/developer2.webp" : "/developer1.webp";
-
-const GRAY = "#666";
+const REFRESH_LOGO = "/developer1.webp"; // jediný soubor
 
 /* -------------------------------------------------- */
 /* Navbar                                             */
@@ -43,19 +39,19 @@ const Navbar = ({
   onToggleMatrix,
 }) => {
   const { t } = useTranslation();
-
-  /* --- motiv a jeho barva přímo z ThemeContextu --- */
   const { theme } = useContext(ThemeContext);
+
   const bulbColor = COLOR_MAP[theme] || "#00ffff";
-  const logoSrc   = logoForTheme(theme);
 
-  /* --- další lokální stavy --- */
-  const [activeMenu, setActiveMenu] = useState(null); // null | "sections" | "languages"
+  // invert = 1 pro tmavá témata, invert = 0 pro světlá
+  const isDark = DARK_THEMES.has(theme);
+  const logoFilter = isDark ? "invert(1)" : "invert(0)";
+
+  const [activeMenu, setActiveMenu] = useState(null);
   const [scrollProg, setScrollProg] = useState(0);
-
   const navRef = useRef(null);
 
-  /* scroll-bar ------------------------------------------------------ */
+  /* scroll progress */
   useEffect(() => {
     const onScroll = () => {
       const top = document.documentElement.scrollTop || document.body.scrollTop;
@@ -67,7 +63,7 @@ const Navbar = ({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* click-outside zavírá dropdown ---------------------------------- */
+  /* click outside */
   useEffect(() => {
     const close = (e) => {
       if (
@@ -81,21 +77,27 @@ const Navbar = ({
     return () => document.removeEventListener("pointerdown", close);
   }, []);
 
-  /* helper pro smooth scroll --------------------------------------- */
   const scrollTo = (r) => {
     r?.current?.scrollIntoView({ behavior: "smooth" });
     setActiveMenu(null);
   };
 
-  /* --------------------------- RENDER ----------------------------- */
   return (
     <nav className="navbar" ref={navRef} aria-label="Primary Navigation">
-      {/* BRAND + žárovka -------------------------------------------- */}
+      {/* BRAND */}
       <div
         className="navbar-brand"
         style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
       >
-        <img src={logoSrc} alt="Developer icon" style={{ height: 40 }} />
+        <img
+          src={REFRESH_LOGO}
+          alt="Developer icon"
+          style={{
+            height: 40,
+            filter: logoFilter,
+            transition: "filter 0.3s ease",
+          }}
+        />
 
         <p>
           {t(navbarData.brandText)}
@@ -115,8 +117,8 @@ const Navbar = ({
           <BsLightbulbFill
             size={30}
             style={{
-              color: matrixEnabled ? bulbColor : GRAY,
-              fill:  matrixEnabled ? bulbColor : GRAY,
+              color: matrixEnabled ? bulbColor : "#666",
+              fill:  matrixEnabled ? bulbColor : "#666",
               filter: matrixEnabled
                 ? `drop-shadow(0 0 6px ${bulbColor})`
                 : "none",
@@ -126,7 +128,7 @@ const Navbar = ({
         </button>
       </div>
 
-      {/* DESKTOP LINKS ---------------------------------------------- */}
+      {/* DESKTOP LINKS */}
       <div className="navbar-center desktop">
         {sections.map(({ label, ref }, idx) => (
           <React.Fragment key={label}>
@@ -156,7 +158,7 @@ const Navbar = ({
         </div>
       </div>
 
-      {/* MOBILE ------------------------------------------------------ */}
+      {/* MOBILE */}
       <div className="navbar-right mobile">
         <LanguageSwitcher
           activeMenu={activeMenu}
@@ -194,7 +196,7 @@ const Navbar = ({
         )}
       </div>
 
-      {/* PROGRESS BAR ----------------------------------------------- */}
+      {/* PROGRESS BAR */}
       <div
         className="scroll-progress-bar"
         aria-hidden="true"
