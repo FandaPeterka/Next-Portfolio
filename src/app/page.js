@@ -129,16 +129,19 @@ export default function Home() {
       </div>
 
       {/* Welcome */}
-      <div
-        ref={welcomeRef}
-        style={{
-          marginTop: "clamp(0rem, 10vh, 0rem)",
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        <ScrollIndicator text={appData.scrollIndicatorText} />
-      </div>
+        <div
+          ref={welcomeRef}
+          style={{
+            marginTop: "clamp(0rem, 10vh, 0rem)",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
+          <ScrollIndicator
+            nextRef={introductionRef}         
+            text={appData.scrollIndicatorText}
+          />
+        </div>
 
       <Spacer />
 

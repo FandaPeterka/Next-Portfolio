@@ -1,4 +1,9 @@
-// use client
+/* =========================================================
+   ScrollIndicator.jsx – klik přenese na další sekci
+   (aktivní pouze šipka)
+   ========================================================= */
+"use client";
+
 import React, {
   useRef,
   useEffect,
@@ -17,26 +22,25 @@ const PX_PER_100   = 25;
 const SMALL_BP     = 480;
 const SMALL_SHIFT  = -100;
 
-export default function ScrollIndicator() {
-  const { t } = useTranslation();
+export default function ScrollIndicator({ nextRef }) {
+  const { t }  = useTranslation();
   const { theme } = useContext(ThemeContext);
 
   const indicatorRef = useRef(null);
   const iconRef      = useRef(null);
 
-  const [isActive, setActive]     = useState(false);
-  const [shiftY,   setShiftY]     = useState(0);
+  const [isActive, setActive]         = useState(false);
+  const [shiftY,   setShiftY]         = useState(0);
   const [bubbleVisible, setBubbleVisible] = useState(false);
 
-  // jediné zdroje
   const imgSrc    = "/mac-me.webp";
   const bubbleSrc = "/textbubble.webp";
 
-  // podle tématu invertujeme barvy
-  const isDark = DARK_TEXT_THEMES.includes(theme);
+  const isDark    = DARK_TEXT_THEMES.includes(theme);
   const imgFilter = isDark ? "invert(1)" : "invert(0)";
+  const arrowColor = isDark ? "#000" : "#fff";
 
-  // vertikální posun
+  /* ------- přepočet posunu obrázku ----------------------------------- */
   useEffect(() => {
     const recalc = () => {
       const deltaH     = window.innerHeight - REF_HEIGHT;
@@ -49,7 +53,7 @@ export default function ScrollIndicator() {
     return () => window.removeEventListener("resize", recalc);
   }, []);
 
-  // IntersectionObserver – puls šipky
+  /* ------- IntersectionObserver – puls šipky ------------------------- */
   const observerCb = useCallback(([e]) => setActive(e.isIntersecting), []);
   useEffect(() => {
     const obs = new IntersectionObserver(observerCb, { threshold: 0.5 });
@@ -57,7 +61,7 @@ export default function ScrollIndicator() {
     return () => obs.disconnect();
   }, [observerCb]);
 
-  // GSAP animace šipky
+  /* ------- GSAP animace šipky ---------------------------------------- */
   useEffect(() => {
     if (!iconRef.current) return;
     let tw;
@@ -76,14 +80,13 @@ export default function ScrollIndicator() {
     return () => tw?.kill();
   }, [isActive]);
 
-  // Fade-in bubliny
+  /* ------- Fade-in bubliny ------------------------------------------- */
   useEffect(() => {
     const id = requestAnimationFrame(() => setBubbleVisible(true));
     return () => cancelAnimationFrame(id);
   }, []);
 
-  // šipka
-  const arrowColor = isDark ? "#000" : "#fff";
+  /* ------- SVG šipka -------------------------------------------------- */
   const arrowSvg = useMemo(
     () => (
       <svg
@@ -104,6 +107,12 @@ export default function ScrollIndicator() {
     [arrowColor]
   );
 
+  /* ------- CLICK – jen na šipce -------------------------------------- */
+  const handleClick = () => {
+    nextRef?.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  /* --------------------------- render -------------------------------- */
   return (
     <div
       ref={indicatorRef}
@@ -113,8 +122,10 @@ export default function ScrollIndicator() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        userSelect: "none",
       }}
     >
+      {/* obrázek + bublina – neklikací */}
       <div
         className="si-figure"
         style={{
@@ -157,7 +168,14 @@ export default function ScrollIndicator() {
         />
       </div>
 
-      <div ref={iconRef} className="si-arrow" aria-hidden="true">
+      {/* klikací šipka */}
+      <div
+        ref={iconRef}
+        className="si-arrow"
+        aria-hidden="true"
+        onClick={handleClick}
+        style={{ cursor: "pointer" }}
+      >
         {arrowSvg}
       </div>
     </div>
