@@ -115,6 +115,12 @@
   color: var(--color-black) !important;
 }
 
+[data-theme="midnight-purple"] .mobile-menu-icon,
+[data-theme="glacier-night"]   .mobile-menu-icon,
+[data-theme="mocha-space"]     .mobile-menu-icon {
+  color: var(--color-black);
+}
+
 
 /* ========================================================
    2. UTILITY TŘÍDY
@@ -609,14 +615,6 @@ body {
   font-size: 1rem;
 }
 
-/* světlé motivy přepíší pouze barvu textu,
-   border se přizpůsobí automaticky díky `currentColor` */
-[data-theme="midnight-purple"] .lang-btn,
-[data-theme="glacier-night"]   .lang-btn,
-[data-theme="mocha-space"]     .lang-btn {
-  color: var(--color-black);
-}
-
 .language-dropdown {
   position: absolute;
   top: 33px;
@@ -783,6 +781,8 @@ body {
   color: var(--color-white);
   align-items: center;
 }
+
+
 
 .mobile-dropdown {
   position: absolute;
