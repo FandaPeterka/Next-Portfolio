@@ -1,30 +1,40 @@
+/* =========================================================
+   Home page – s funkční LedMatrix (verze 2)
+   ========================================================= */
+
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import Navbar from "@components/Navbar";
-import Tech3DIcons from "@components/Tech3DIcons";
-import LedMatrix from "@components/LedMatrix";
-import ScrollIndicator from "@components/ScrollIndicator";
-import CardsComponent from "@components/CardsComponent";
+import React, {
+  useRef,
+  useEffect,
+  useContext,
+  useMemo,
+} from "react";
+import { useTranslation } from "react-i18next";
+import gsap, { ScrollTrigger } from "gsap/all";
+
+import { NavigationContext } from "@contexts/NavigationContext";
+
+/* sekce + komponenty */
+import ScrollIndicator    from "@components/ScrollIndicator";
+import CardsComponent     from "@components/CardsComponent";
+import Tech3DIcons        from "@components/Tech3DIcons";
 import HorizontalTimeline from "@components/HorizontalTimeline";
-import ProjectScreens from "@components/ProjectScreens";
-import ParticleNetwork from "@components/ParticleNetwork";
-import Footer from "@components/Footer";
+import ProjectScreens     from "@components/ProjectScreens";
+import ParticleNetwork    from "@components/ParticleNetwork";
+import Footer             from "@components/Footer";
+import BlogCornerButton  from "@components/BlogCornerButton";
+
 import appData from "@data/dataApp";
 
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTranslation } from "react-i18next";
-
-/* ---------------- SectionHeading ---------------- */
+/* ---------- pomocné komponenty ---------- */
 const SectionHeading = ({ text, mb = "0.3rem" }) => {
   const r = useRef(null);
 
   useEffect(() => {
-    // register only in the browser
     gsap.registerPlugin(ScrollTrigger);
-
     if (!r.current) return;
+
     gsap.fromTo(
       r.current,
       { x: -100, skewX: -8, opacity: 0 },
@@ -56,120 +66,112 @@ const SectionHeading = ({ text, mb = "0.3rem" }) => {
   );
 };
 
-/* ---------------- Spacer ---------------- */
 const Spacer = ({ h = "3rem" }) => <div aria-hidden style={{ height: h }} />;
 
-/* =================================================================== */
-
+/* ---------- HLAVNÍ KOMPONENTA ---------- */
 export default function Home() {
   const { t } = useTranslation();
 
-  const welcomeRef = useRef(null);
-  const introductionRef = useRef(null);
-  const techStackRef = useRef(null);
-  const experienceRef = useRef(null);
+  /* refs jednotlivých sekcí */
+  const welcomeRef  = useRef(null);
+  const introRef    = useRef(null);
+  const techRef     = useRef(null);
+  const expRef      = useRef(null);
   const projectsRef = useRef(null);
-  const contactRef = useRef(null);
+  const contactRef  = useRef(null);
 
-  const [activeSection, setActiveSection] = useState(0);
-  const [matrixEnabled, setMatrixEnabled] = useState(true);
+  /* context */
+  const { registerSections, updateActive } = useContext(NavigationContext);
 
-  const sections = [
-    { label: appData.sections[0].label, ref: welcomeRef },
-    { label: appData.sections[1].label, ref: introductionRef },
-    { label: appData.sections[2].label, ref: techStackRef },
-    { label: appData.sections[3].label, ref: experienceRef },
+  /* seznam sekcí (sdílený s Navbar) – memoizujeme, aby se reference neměnily */
+  const sections = useMemo(() => ([
+    { label: appData.sections[0].label, ref: welcomeRef  },
+    { label: appData.sections[1].label, ref: introRef    },
+    { label: appData.sections[2].label, ref: techRef     },
+    { label: appData.sections[3].label, ref: expRef      },
     { label: appData.sections[4].label, ref: projectsRef },
-    { label: appData.sections[5].label, ref: contactRef },
-  ];
+    { label: appData.sections[5].label, ref: contactRef  },
+  ]), []);
 
+  /* zaregistrujeme do kontextu jen jednou */
+  useEffect(() => registerSections(sections), [registerSections, sections]);
+
+  /* ---------- sledování scrollu ---------- */
   useEffect(() => {
-    const obs = new IntersectionObserver(() => {}, {
+    const io = new IntersectionObserver(() => {}, {
       rootMargin: "-80px 0px 0px 0px",
-      threshold: Array.from({ length: 11 }, (_, i) => i / 10),
+      threshold : Array.from({ length: 11 }, (_, i) => i / 10),
     });
-    sections.forEach(({ ref }) => ref.current && obs.observe(ref.current));
+    sections.forEach(({ ref }) => ref.current && io.observe(ref.current));
 
-    const update = () => {
+    const recalc = () => {
       let best = 0, min = Infinity;
-      sections.forEach(({ ref }, idx) => {
-        const rect = ref.current?.getBoundingClientRect();
-        if (rect) {
-          const d = Math.abs(rect.top + 80);
-          if (d < min) { min = d; best = idx; }
-        }
+      sections.forEach(({ ref }, i) => {
+        const r = ref.current?.getBoundingClientRect();
+        if (!r) return;
+        const d = Math.abs(r.top + 80);
+        if (d < min) { min = d; best = i; }
       });
-      setActiveSection(best);
+
+      /* aktualizujeme kontext (label + index) */
+      updateActive(sections[best].label, best);
     };
 
-    let tId;
-    const onScroll = () => {
-      clearTimeout(tId);
-      tId = setTimeout(update, 120);
-    };
-    window.addEventListener("scroll", onScroll);
+    let t;
+    const onScroll = () => { clearTimeout(t); t = setTimeout(recalc, 120); };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
-      obs.disconnect();
+      io.disconnect();
     };
-  }, [sections]);
+  }, [sections, updateActive]);
 
+  /* ---------- render ---------- */
   return (
     <div className="App">
-      <Navbar
-        sections={sections}
-        activeSection={sections[activeSection].label}
-        matrixEnabled={matrixEnabled}
-        onToggleMatrix={() => setMatrixEnabled((s) => !s)}
-      />
-
-      {/* FIXED BACKGROUND */}
-      <div style={{ position: "fixed", inset: 0, zIndex: -1 }} aria-hidden>
-        <LedMatrix activeSection={activeSection} showDots={matrixEnabled} />
+      {/* Welcome ------------------------------------------------ */}
+      <div
+        ref={welcomeRef}
+        style={{
+          marginTop: "clamp(0rem, 10vh, 0rem)",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <ScrollIndicator
+          nextRef={introRef}
+          text={appData.scrollIndicatorText}
+        />
       </div>
-
-      {/* Welcome */}
-        <div
-          ref={welcomeRef}
-          style={{
-            marginTop: "clamp(0rem, 10vh, 0rem)",
-            position: "relative",
-            zIndex: 1,
-          }}
-        >
-          <ScrollIndicator
-            nextRef={introductionRef}         
-            text={appData.scrollIndicatorText}
-          />
-        </div>
 
       <Spacer />
 
-      {/* Intro */}
-      <div ref={introductionRef} style={{ position: "relative", zIndex: 2 }}>
+      {/* Intro -------------------------------------------------- */}
+      <div ref={introRef} style={{ position: "relative", zIndex: 2 }}>
         <SectionHeading text={t(appData.sections[1].label)} />
         <CardsComponent />
       </div>
 
       <Spacer />
 
-      {/* Tech */}
-      <div ref={techStackRef} style={{ position: "relative", zIndex: 2 }}>
+      {/* Tech --------------------------------------------------- */}
+      <div ref={techRef} style={{ position: "relative", zIndex: 2 }}>
         <SectionHeading text={t(appData.sections[2].label)} mb="-5rem" />
         <Tech3DIcons />
       </div>
 
       <Spacer h="12rem" />
 
-      {/* Experience */}
-      <div ref={experienceRef} style={{ position: "relative", zIndex: 2 }}>
+      {/* Experience -------------------------------------------- */}
+      <div ref={expRef} style={{ position: "relative", zIndex: 2 }}>
         <SectionHeading text={t(appData.sections[3].label)} />
         <HorizontalTimeline />
       </div>
 
       <Spacer h="3.5rem" />
 
-      {/* Projects */}
+      {/* Projects ---------------------------------------------- */}
       <div ref={projectsRef} style={{ position: "relative", zIndex: 2 }}>
         <SectionHeading text={t(appData.sections[4].label)} />
         <ProjectScreens />
@@ -177,13 +179,14 @@ export default function Home() {
 
       <Spacer />
 
-      {/* Contact */}
+      {/* Contact ----------------------------------------------- */}
       <div ref={contactRef} style={{ position: "relative", zIndex: 2 }}>
         <SectionHeading text={t(appData.sections[5].label)} />
         <ParticleNetwork />
       </div>
 
       <Footer />
+      <BlogCornerButton />
     </div>
   );
 }

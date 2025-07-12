@@ -9,7 +9,7 @@ import gsap from "gsap";
 /* --------------------------------------------------------- */
 /* 1.  Parametry & utils                                      */
 /* --------------------------------------------------------- */
-const HOVER_RADIUS = 40;                         // px – kdy “chytneme” hover
+const HOVER_RADIUS = 30;                         // px – kdy “chytneme” hover
 
 const SHAPES = {
   table: () => {

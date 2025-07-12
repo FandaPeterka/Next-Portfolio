@@ -2,6 +2,9 @@
 import "./globals.css";
 import ClientProviders from "./ClientProviders";
 import { Analytics } from "@vercel/analytics/react";
+import NavigationProvider from "@contexts/NavigationContext";
+import Navbar from "@components/Navbar"
+import MatrixBackground  from "@components/MatrixBackground";
 
 export const metadata = {
   metadataBase: new URL("https://www.frantisekpeterka.com"),
@@ -64,7 +67,17 @@ export default function RootLayout({ children }) {
     <html lang="cs">
       <body>
         <ClientProviders>
-          {children}
+          <NavigationProvider>
+            {/* --- pevný podklad --- */}
+            <MatrixBackground />
+
+            {/* --- hlavička / navigace --- */}
+            <Navbar />
+
+            {/* --- vlastní obsah stránky --- */}
+            {children}
+          </NavigationProvider>
+
           <Analytics />
         </ClientProviders>
       </body>

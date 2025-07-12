@@ -1802,3 +1802,11 @@ html{ overflow-x:hidden; }
 .animated-button.active .dot {
   background-color: var(--bezel-color);
 }
+
+/* Jemný hover / tap efekt (podle potřeby uprav)  */
+a[aria-label="Přejít na blog"]:hover {
+  filter: brightness(1.1);
+}
+a[aria-label="Přejít na blog"]:active {
+  filter: brightness(0.9);
+}
