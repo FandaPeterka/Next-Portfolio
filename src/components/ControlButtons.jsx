@@ -1,183 +1,169 @@
+/* =========================================================
+   ControlButtons.jsx – animace se NEspouští u vybraného tvaru
+   ========================================================= */
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+
+import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 
-const THRESHOLD = 80; // Vzdálenost v pixelech, při které se animace teprve vypne
+/* --------------------------------------------------------- */
+/* 1.  Parametry & utils                                      */
+/* --------------------------------------------------------- */
+const HOVER_RADIUS = 40;                         // px – kdy “chytneme” hover
 
-// Více zřejmé tvary:
-// - TABULKA = 3x3 s většími mezerami (20 => spacing v příkladu níže)
-// - SPHERE = střed + 8 teček kolem v poloměru 25
-// - RING = 8 teček v poloměru 25
-function getTargetShape(type) {
-  if (type === "table") {
-    // 3x3
-    const positions = [];
-    const spacing = 20;
-    for (let row = -1; row <= 1; row++) {
-      for (let col = -1; col <= 1; col++) {
-        positions.push({ x: col * spacing, y: row * spacing });
-      }
-    }
-    return positions;
-  } else if (type === "sphere") {
-    // středová tečka + 8 do kruhu (radius 25)
-    const ring = [];
-    const radius = 25;
+const SHAPES = {
+  table: () => {
+    const out = [];
+    for (let r = -1; r <= 1; r++)
+      for (let c = -1; c <= 1; c++) out.push({ x: c * 20, y: r * 20 });
+    return out;
+  },
+  sphere: () => {
+    const R = 25, ring = [];
     for (let i = 0; i < 8; i++) {
-      const angle = (2 * Math.PI * i) / 8;
-      ring.push({
-        x: radius * Math.cos(angle),
-        y: radius * Math.sin(angle),
-      });
+      const a = (2 * Math.PI * i) / 8;
+      ring.push({ x: R * Math.cos(a), y: R * Math.sin(a) });
     }
     return [{ x: 0, y: 0 }, ...ring];
-  } else if (type === "ring") {
-    // 8 teček v kruhu (radius 25), žádná středová
-    const ring = [];
-    const radius = 25;
+  },
+  ring: () => {
+    const R = 25, ring = [];
     for (let i = 0; i < 8; i++) {
-      const angle = (2 * Math.PI * i) / 8;
-      ring.push({
-        x: radius * Math.cos(angle),
-        y: radius * Math.sin(angle),
-      });
+      const a = (2 * Math.PI * i) / 8;
+      ring.push({ x: R * Math.cos(a), y: R * Math.sin(a) });
     }
     return ring;
   }
-  // fallback
-  return getTargetShape("table");
-}
-
-// Pomocná funkce pro generování popisku tlačítka (aria-label)
-const getAriaLabel = (type) => {
-  switch (type) {
-    case "table":
-      return "Zobrazit rozložení tabulky";
-    case "sphere":
-      return "Zobrazit rozložení koule";
-    case "ring":
-      return "Zobrazit rozložení kruhu";
-    default:
-      return "Změnit rozložení";
-  }
 };
 
-function AnimatedButton({ type, onClick }) {
-  const buttonRef = useRef(null);
-  const dotRefs = useRef([]); // Refs na jednotlivé tečky
-  const shapePositions = getTargetShape(type);
-  const [isHovered, setIsHovered] = useState(false);
+const ARIA = {
+  table : "Zobrazit rozložení tabulky",
+  sphere: "Zobrazit rozložení koule",
+  ring  : "Zobrazit rozložení kruhu",
+};
 
-  // Vytvoříme 1 div pro každou tečku podle shapePositions
-  const dotCount = shapePositions.length;
-  const dotsArray = Array.from({ length: dotCount }, (_, i) => i);
+const TO_LAYOUT = { table: "table", sphere: "sphere", ring: "helix" };
 
-  // GSAP timeline(s)
-  const hoverAnimations = useRef([]); // Uloží timeline/animaci pro jednotlivé tečky
+/* --------------------------------------------------------- */
+/* 2.  Jedno kolečkové tlačítko                               */
+/* --------------------------------------------------------- */
+function AnimatedButton({ type, active, isTouch, onClick }) {
+  const btn      = useRef(null);
+  const dots     = useRef([]);
+  const loops    = useRef([]);
+  const shapePos = SHAPES[type]();
 
+  const [hover, setHover] = useState(false);
+
+  /* ―― sledování kurzoru (jen desktop) ――――――――――――――――――――――――― */
   useEffect(() => {
-    if (!dotRefs.current.length) return;
-
-    if (isHovered) {
-      // Spustíme animaci pro každou tečku: 0,0 => shape => shape => 0,0
-      dotRefs.current.forEach((dot, i) => {
-        if (!dot) return;
-        if (hoverAnimations.current[i]) {
-          hoverAnimations.current[i].kill();
-        }
-        const { x, y } = shapePositions[i];
-        const tl = gsap.timeline();
-        tl.set(dot, { x: 0, y: 0, opacity: 0 });
-        tl.to(dot, {
-          x,
-          y,
-          opacity: 1,
-          duration: 0.4,
-          ease: "power2.inOut",
-          delay: i * 0.1,
-        });
-        tl.to(dot, { duration: 0.1 });
-        tl.to(dot, {
-          x: 0,
-          y: 0,
-          opacity: 1,
-          duration: 0.3,
-          ease: "power2.inOut",
-        });
-        hoverAnimations.current[i] = tl;
-      });
-    } else {
-      // Resetujeme tečky na původní pozice
-      dotRefs.current.forEach((dot, i) => {
-        if (hoverAnimations.current[i]) {
-          hoverAnimations.current[i].kill();
-        }
-        gsap.set(dot, { x: shapePositions[i].x, y: shapePositions[i].y, opacity: 1 });
-      });
-    }
-  }, [isHovered, shapePositions]);
-
-  // Sledujeme kurzor – pokud je v definované vzdálenosti, nastavíme isHovered = true
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (!buttonRef.current) return;
-      const rect = buttonRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const dx = e.clientX - centerX;
-      const dy = e.clientY - centerY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      if (distance <= THRESHOLD) {
-        setIsHovered(true);
-      } else {
-        setIsHovered(false);
-      }
+    if (isTouch || active) return;              // při výběru ani nehoveruje
+    const move = (e) => {
+      const r = btn.current?.getBoundingClientRect();
+      if (!r) return;
+      const d = Math.hypot(e.clientX - (r.left + r.width / 2),
+                           e.clientY - (r.top  + r.height / 2));
+      setHover(d <= HOVER_RADIUS);
     };
-    document.addEventListener("mousemove", handleMouseMove);
-    return () => document.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+    document.addEventListener("mousemove", move, { passive: true });
+    return () => document.removeEventListener("mousemove", move);
+  }, [isTouch, active]);
 
+  /* ―― smyčková animace při hoveru ――――――――――――――――――――――――――― */
+  useEffect(() => {
+    dots.current.forEach((dot, i) => {
+      if (!dot) return;
+      const { x, y } = shapePos[i];
+
+      // kill případné staré animace
+      loops.current[i]?.kill();
+      loops.current[i] = null;
+
+      // ► pokud je tlačítko aktivní, jen “zaparkuj” body a skonči
+      if (active) {
+        gsap.set(dot, { x, y, opacity: 1 });
+        return;
+      }
+
+      // ► pokud hoverujeme, spustíme smyčku, jinak reset
+      if (hover) {
+        const tl = gsap.timeline({ repeat: -1, yoyo: true, ease: "power2.inOut" });
+        tl.to(dot, { x: 0, y: 0, duration: 0.55 })
+          .to(dot, { x, y, duration: 0.35 });
+        loops.current[i] = tl;
+      } else {
+        gsap.to(dot, { x, y, duration: 0.45, ease: "power2.out" });
+      }
+    });
+  }, [hover, active, shapePos]);
+
+  /* ―― init pozice (po mountu) ――――――――――――――――――――――――――――― */
+  useEffect(() => {
+    dots.current.forEach((dot, i) => gsap.set(dot, shapePos[i]));
+  }, [shapePos]);
+
+  /* ―― úklid ――――――――――――――――――――――――――――――――――――――――――――― */
+  useEffect(() => () => loops.current.forEach((tl) => tl?.kill()), []);
+
+  /* ―― render ―――――――――――――――――――――――――――――――――――――――――――― */
   return (
     <button
-      ref={buttonRef}
-      className="animated-button"
+      ref={btn}
+      className={`animated-button${active ? " active" : ""}`}
+      aria-label={ARIA[type]}
       onClick={onClick}
-      aria-label={getAriaLabel(type)}
     >
       <div className="dots-container" style={{ position: "relative" }}>
-        {dotsArray.map((_, i) => (
-          <div
-            key={i}
-            ref={(el) => (dotRefs.current[i] = el)}
-            className="dot"
-          />
+        {shapePos.map((_, i) => (
+          <div key={i} ref={(el) => (dots.current[i] = el)} className="dot" />
         ))}
       </div>
     </button>
   );
 }
 
-function AnimatedButtons({ handleLayoutChange }) {
+/* --------------------------------------------------------- */
+/* 3.  Trojice tlačítek                                      */
+/* --------------------------------------------------------- */
+function ButtonGroup({ activeLayout, isTouch, onLayout }) {
   return (
     <>
-      <AnimatedButton type="table" onClick={() => handleLayoutChange("table")} />
-      <AnimatedButton type="sphere" onClick={() => handleLayoutChange("sphere")} />
-      <AnimatedButton type="ring" onClick={() => handleLayoutChange("helix")} />
+      {["table", "sphere", "ring"].map((t) => (
+        <AnimatedButton
+          key={t}
+          type={t}
+          isTouch={isTouch}
+          active={
+            activeLayout === TO_LAYOUT[t] ||
+            (t === "ring" && activeLayout === "helix")
+          }
+          onClick={() => onLayout(TO_LAYOUT[t])}
+        />
+      ))}
     </>
   );
 }
 
+/* --------------------------------------------------------- */
+/* 4.  ControlButtons (export)                               */
+/* --------------------------------------------------------- */
 export default function ControlButtons({
-  selectedTech,
-  handleLayoutChange,
-  handleRestart,
-  resetSelection,
+  selectedTech,          // aktuálně vybraný card (index) | null
+  activeLayout,          // "table" | "sphere" | "helix"
+  isTouchDevice,         // prop z parent komponenty
+  handleLayoutChange,    // fn
+  handleRestart,         // fn
+  resetSelection,        // fn
 }) {
   return (
     <nav id="menu" aria-label="Ovládací prvky layoutu">
       {selectedTech === null ? (
         <div className="controls">
-          <AnimatedButtons handleLayoutChange={handleLayoutChange} />
+          <ButtonGroup
+            activeLayout={activeLayout}
+            isTouch={isTouchDevice}
+            onLayout={handleLayoutChange}
+          />
           <button
             onClick={handleRestart}
             className="restart-button"
@@ -188,7 +174,7 @@ export default function ControlButtons({
         </div>
       ) : (
         <button
-          onClick={() => resetSelection()}
+          onClick={resetSelection}
           className="back-button"
           aria-label="Zpět"
         >

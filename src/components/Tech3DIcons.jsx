@@ -332,10 +332,11 @@ useEffect(() => {
 
       <ControlButtons
         selectedTech={selectedTech}
-        handleLayoutChange={handleLayoutChange}
         activeLayout={activeLayout}
+        handleLayoutChange={handleLayoutChange}
         handleRestart={handleRestart}
         resetSelection={resetSelection}
+        isTouchDevice={isTouchDevice}
       />
 
       {selectedTech !== null && (

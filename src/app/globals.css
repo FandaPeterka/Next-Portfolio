@@ -418,20 +418,53 @@ body {
 }
 
 /* --- 3.12 Credits Page --- */
+/* --- 3.12 Credits Page ---------------------------------------------- */
 .credits-page {
+  /* Přebírá barvy z aktuálního motivu */
   background-color: var(--color-bg-primary);
   color: var(--color-white);
-  padding: 20px;
+
+  /* vyplní celou výšku okna a vycentruje obsah */
+  min-height: 100vh;               /* ↞ roztáhne se na celou obrazovku */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 2rem;
   text-align: center;
   font-size: 1rem;
+  line-height: 1.6;
 }
+
+/* odkazy – stejné chování jako jinde */
 .credits-page a {
   color: var(--color-accent);
   text-decoration: none;
-  transition: color 0.3s ease;
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
 .credits-page a:hover {
   color: var(--color-white);
+  border-color: currentColor;      /* jemné podtržení při hoveru */
+}
+
+/* světlé motivy: text a odkazy do černa ------------------------------ */
+[data-theme="midnight-purple"] .credits-page,
+[data-theme="glacier-night"]   .credits-page,
+[data-theme="mocha-space"]     .credits-page {
+  color: var(--color-black);
+}
+[data-theme="midnight-purple"] .credits-page a,
+[data-theme="glacier-night"]   .credits-page a,
+[data-theme="mocha-space"]     .credits-page a {
+  color: var(--color-black);
+}
+[data-theme="midnight-purple"] .credits-page a:hover,
+[data-theme="glacier-night"]   .credits-page a:hover,
+[data-theme="mocha-space"]     .credits-page a:hover {
+  color: var(--color-accent);
+  border-color: currentColor;
 }
 
 /* --- 3.13 Footer (Credits a další) --- */
@@ -1763,4 +1796,9 @@ html{ overflow-x:hidden; }
 /* ikona bez vlastní baseline */
 .bulb-icon {
   display: block;   /* vezme přesně rozměr viewBoxu -> bez mezírky */
+}
+
+/* zvýraznění vybraného layoutu */
+.animated-button.active .dot {
+  background-color: var(--bezel-color);
 }
