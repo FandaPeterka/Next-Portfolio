@@ -148,19 +148,28 @@ const ScreenBox = ({
   dimensions,
   onHold,
   onRelease,
-  inView = true,           // <<< reaguje na IntersectionObserver
+  inView = true,      // reaguje na IntersectionObserver
 }) => {
-  const groupRef  = useRef();
-  const texture   = useLoader(TextureLoader, imageUrl);
+  // sleduje změnu motivu a vynutí re-render
+  const theme = useDocumentTheme();
+
+  const groupRef = useRef();
+  const texture  = useLoader(TextureLoader, imageUrl);
   const { width, height, depth } = dimensions;
 
-  /* ► stavy interakce --------------------------------------------------- */
-  const [hover, setHover]   = useState(false);
-  const [held,  setHeld]    = useState(false);
+  // stavy interakce
+  const [hover, setHover] = useState(false);
+  const [held,  setHeld]  = useState(false);
 
-  /* ► cílová rotace ----------------------------------------------------- */
-  const baseAngleDeg  = reverse ? -25 : 25;
-  const baseAngleRad  = (baseAngleDeg * Math.PI) / 180;
+  // aktuální barva rámu (CSS proměnná)
+  const bezelColor =
+    getComputedStyle(document.documentElement)
+      .getPropertyValue("--bezel-color")
+      .trim() || "#808080";
+
+  // cílová rotace
+  const baseAngleDeg = reverse ? -25 : 25;
+  const baseAngleRad = (baseAngleDeg * Math.PI) / 180;
 
   useEffect(() => {
     if (!groupRef.current) return;
@@ -218,14 +227,11 @@ const ScreenBox = ({
         ))}
       </mesh>
 
-      {/* rámeček */}
-      <mesh geometry={bezelGeometry} position={[0, 0, depth/2 + 0.015]}>
+           {/* rámeček */}
+      <mesh geometry={bezelGeometry} position={[0, 0, depth / 2 + 0.015]}>
         <meshStandardMaterial
-          color={
-            getComputedStyle(document.documentElement)
-              .getPropertyValue("--bezel-color")
-              .trim() || "#808080"
-          }
+          key={bezelColor}
+          color={bezelColor}
         />
       </mesh>
 
