@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef, useEffect, useCallback, useMemo } from 'react';
 import gsap from 'gsap';
 
@@ -17,7 +19,6 @@ const FourDirectionalWaves = ({ isOverlay }) => {
   ]), []);
 
   const triggerPulse = useCallback((count = 0) => {
-    // Po 2. sérii vln schováme celý kontejner (bez re-renderu).
     if (count >= 1) {
       setTimeout(() => {
         if (containerRef.current) {
@@ -28,30 +29,27 @@ const FourDirectionalWaves = ({ isOverlay }) => {
     }
 
     waveRefs.current.forEach((ref, i) => {
-      if (ref) {
-        gsap.fromTo(
-          ref,
-          { x: 0, y: 0, opacity: 0.7 },
-          {
-            x: directions[i].x,
-            y: directions[i].y,
-            opacity: 0,
-            duration: pulseDuration,
-            ease: 'power2.inOut',
-            onComplete: () => {
-              // Poslední vlna spustí další kolo pulzů
-              if (i === directions.length - 1) {
-                triggerPulse(count + 1);
-              }
+      if (!ref) return;
+      gsap.fromTo(
+        ref,
+        { x: 0, y: 0, opacity: 0.7 },
+        {
+          x: directions[i].x,
+          y: directions[i].y,
+          opacity: 0,
+          duration: pulseDuration,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            if (i === directions.length - 1) {
+              triggerPulse(count + 1);
             }
           }
-        );
-      }
+        }
+      );
     });
-  }, [directions, pulseDuration]);
+  }, [directions]);
 
   useEffect(() => {
-    // Pokud už jednou proběhlo, nic dalšího nespouštíme
     if (hasTriggeredRef.current) return;
 
     const observer = new IntersectionObserver(
@@ -61,7 +59,9 @@ const FourDirectionalWaves = ({ isOverlay }) => {
             obs.disconnect();
             hasTriggeredRef.current = true;
             hasFourDirectionalWavesTriggeredGlobal = true;
-            triggerPulse();
+
+            // Delay first pulse by ~1s
+            setTimeout(() => triggerPulse(), 1050);
           }
         });
       },
@@ -86,13 +86,13 @@ const FourDirectionalWaves = ({ isOverlay }) => {
         transform: 'translate(-50%, -50%)',
         width: 150,
         height: 150,
-        pointerEvents: 'none'
+        pointerEvents: 'none',
       }}
     >
       {[...Array(4)].map((_, i) => (
         <div
           key={i}
-          ref={(el) => (waveRefs.current[i] = el)}
+          ref={el => waveRefs.current[i] = el}
           style={{
             position: 'absolute',
             top: '50%',
@@ -100,8 +100,9 @@ const FourDirectionalWaves = ({ isOverlay }) => {
             width: 30,
             height: 30,
             borderRadius: '50%',
-            backgroundColor: 'white', // zde je změna – kruhy budou vyplněné
+            backgroundColor: 'white',
             transform: 'translate(-50%, -50%)',
+            opacity: 0,            // <-- hide initially
           }}
         />
       ))}
