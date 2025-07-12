@@ -29,8 +29,8 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-    site: "@tvojeTwitterUživJméno",          // pokud máš svůj účet
-    creator: "@tvojeTwitterUživJméno",      // tvé vlastní jméno
+    site: "@tvojeTwitterUzivJmeno",
+    creator: "@tvojeTwitterUzivJmeno",
     title: "František Peterka Portfolio",
     description:
       "Portfolio aplikace s 3D efekty a interaktivními prvky představující projekty Františka Peterky.",
@@ -47,18 +47,11 @@ export const metadata = {
     icon16: { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     icon32: { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    android: {
-      url: "/android-chrome-192x192.png",
-      sizes: "192x192",
-      type: "image/png",
-    },
-    android512: {
-      url: "/android-chrome-512x512.png",
-      sizes: "512x512",
-      type: "image/png",
-    },
-    shortcut: "/site.webmanifest",
+    android: { url: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+    android512: { url: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
   },
+
+  manifest: "/site.webmanifest",
 
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
