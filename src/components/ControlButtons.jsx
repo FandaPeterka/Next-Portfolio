@@ -174,7 +174,7 @@ export default function ControlButtons({
         </div>
       ) : (
         <button
-          onClick={resetSelection}
+          onClick={() => resetSelection()}  /* šipka, event se nepředá */
           className="back-button"
           aria-label="Zpět"
         >
