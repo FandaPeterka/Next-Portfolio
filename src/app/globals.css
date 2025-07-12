@@ -115,12 +115,6 @@
   color: var(--color-black) !important;
 }
 
-[data-theme="midnight-purple"] .mobile-menu-icon,
-[data-theme="glacier-night"]   .mobile-menu-icon,
-[data-theme="mocha-space"]     .mobile-menu-icon {
-  color: var(--color-black);
-}
-
 
 /* ========================================================
    2. UTILITY TŘÍDY
@@ -615,6 +609,14 @@ body {
   font-size: 1rem;
 }
 
+/* světlé motivy přepíší pouze barvu textu,
+   border se přizpůsobí automaticky díky `currentColor` */
+[data-theme="midnight-purple"] .lang-btn,
+[data-theme="glacier-night"]   .lang-btn,
+[data-theme="mocha-space"]     .lang-btn {
+  color: var(--color-black);
+}
+
 .language-dropdown {
   position: absolute;
   top: 33px;
@@ -774,12 +776,31 @@ body {
   font-size: 1rem;
 }
 
+/* --- .mobile-menu-icon s rámečkem ------------------------------------ */
 .mobile-menu-icon {
   cursor: pointer;
-  background-color: transparent;
+  background: transparent;
   display: flex;
-  color: var(--color-white);
   align-items: center;
+
+  /* hlavní barva & rámeček pro tmavé motivy */
+  color: var(--color-white);
+  border: 1px solid currentColor;   /* ← právě přidaný rámeček  */
+  border-radius: 4px;               /* volitelně zaoblení       */
+  padding: 0.25rem;                 /* odstup ikony od rámečku  */
+}
+
+/* ikoně uvnitř stačí dědit barvu */
+.mobile-menu-icon svg {
+  stroke: currentColor;
+  fill:   currentColor;
+}
+
+/* světlé motivy jen přepíší barvu (rámeček se přebarví automaticky) */
+[data-theme="midnight-purple"] .mobile-menu-icon,
+[data-theme="glacier-night"]   .mobile-menu-icon,
+[data-theme="mocha-space"]     .mobile-menu-icon {
+  color: var(--color-black);
 }
 
 
