@@ -1,20 +1,25 @@
 /* =========================================================
-   ContactForm.jsx  – updated (social links moved out)
+   ContactForm.jsx  – using emailjs-com
    ========================================================= */
 "use client";
+
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import emailjs from "emailjs-com";
 import contactFormData from "../data/dataContactForm";
-import SocialLinks from "./SocialLinks";          // ⬅️ NEW IMPORT
+import SocialLinks from "./SocialLinks";
 
 export default function ContactForm() {
   const { t } = useTranslation();
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
   const [feedback, setFeedback] = useState("");
 
-  /* ---------- helpers ------------------------------------------------- */
   const handleChange = (e) =>
-    setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleArrowKey = (e, nextId, prevId) => {
     const { key, target } = e;
@@ -30,24 +35,27 @@ export default function ContactForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Inicializace EmailJSu
+    emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+
     try {
-      const emailjs = await import("emailjs-com");
-      emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
       await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
         formData
       );
       setFeedback(t(contactFormData.feedback.success));
+      setFormData({ name: "", email: "", message: "" });
     } catch (err) {
-      setFeedback(`${t(contactFormData.feedback.errorPrefix)}${err?.text || err}`);
+      setFeedback(
+        `${t(contactFormData.feedback.errorPrefix)} ${err.text || err}`
+      );
     }
   };
 
-  /* ---------- render -------------------------------------------------- */
   return (
     <form onSubmit={handleSubmit} className="custom-form-container">
-      {/* NAME ----------------------------------------------------------- */}
       <div className="custom-group">
         <label htmlFor="name">{t(contactFormData.labels.name)}</label>
         <input
@@ -63,7 +71,6 @@ export default function ContactForm() {
         />
       </div>
 
-      {/* EMAIL ---------------------------------------------------------- */}
       <div className="custom-group">
         <label htmlFor="email">{t(contactFormData.labels.email)}</label>
         <input
@@ -79,7 +86,6 @@ export default function ContactForm() {
         />
       </div>
 
-      {/* MESSAGE -------------------------------------------------------- */}
       <div className="custom-group">
         <label htmlFor="message">{t(contactFormData.labels.message)}</label>
         <textarea
@@ -95,15 +101,13 @@ export default function ContactForm() {
         />
       </div>
 
-      {/* SUBMIT --------------------------------------------------------- */}
       <button type="submit" className="custom-button">
         {t("contactForm.submitButton", "Odeslat")}
       </button>
 
       {feedback && <p className="custom-feedback">{feedback}</p>}
 
-      {/* SOCIAL LINKS  -------------------------------------------------- */}
-      <SocialLinks />   {/* ⬅️ moved out of the form logic */}
+      <SocialLinks />
     </form>
   );
 }
