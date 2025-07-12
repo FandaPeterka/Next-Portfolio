@@ -600,7 +600,7 @@ body {
 }
 .lang-btn {
   background: none;
-  border: 1px solid var(--color-white);
+  border: 1px solid currentColor;
   color: var(--color-white);
   padding: 0.5rem 0.8rem;
   border-radius: 4px;
@@ -608,6 +608,15 @@ body {
   transition: background 0.2s;
   font-size: 1rem;
 }
+
+/* světlé motivy přepíší pouze barvu textu,
+   border se přizpůsobí automaticky díky `currentColor` */
+[data-theme="midnight-purple"] .lang-btn,
+[data-theme="glacier-night"]   .lang-btn,
+[data-theme="mocha-space"]     .lang-btn {
+  color: var(--color-black);
+}
+
 .language-dropdown {
   position: absolute;
   top: 33px;
