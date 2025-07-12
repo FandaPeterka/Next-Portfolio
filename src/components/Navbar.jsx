@@ -104,28 +104,29 @@ const Navbar = ({
           <span className="brand-subtext"> | {t(navbarData.brandSubText)}</span>
         </p>
 
-        <button
-          type="button"
-          onClick={onToggleMatrix}
-          title={
-            matrixEnabled
-              ? t("Vypnout animované pozadí")
-              : t("Zapnout animované pozadí")
-          }
-          style={{ background: "none", border: "none", cursor: "pointer" }}
-        >
-          <BsLightbulbFill
-            size={30}
-            style={{
-              color: matrixEnabled ? bulbColor : "#666",
-              fill:  matrixEnabled ? bulbColor : "#666",
-              filter: matrixEnabled
-                ? `drop-shadow(0 0 6px ${bulbColor})`
-                : "none",
-              transition: "all .25s",
-            }}
-          />
-        </button>
+          <button
+            type="button"
+            className="matrix-toggle"   // ← nová třída
+            onClick={onToggleMatrix}
+            title={
+              matrixEnabled
+                ? t("Vypnout animované pozadí")
+                : t("Zapnout animované pozadí")
+            }
+          >
+            <BsLightbulbFill
+              size={40}
+              className="bulb-icon"     // (není nutné, ale čistší)
+              style={{
+                color: matrixEnabled ? bulbColor : "#666",
+                fill:  matrixEnabled ? bulbColor : "#666",
+                filter: matrixEnabled
+                  ? `drop-shadow(0 0 6px ${bulbColor})`
+                  : "none",
+                transition: "all .25s",
+              }}
+            />
+          </button>
       </div>
 
       {/* DESKTOP LINKS */}

@@ -1742,3 +1742,25 @@ html{ overflow-x:hidden; }
     margin-top: 10% !important;
   }
 }
+
+
+/* tlačítko pro zapnutí/vypnutí Matrix pozadí */
+.matrix-toggle {
+  /* úplně prázdné, aby nic „nevyčuhovalo“ */
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  line-height: 0;   /* odstraní eventuální baseline mezeru */
+}
+
+/* outline jen při klávesové navigaci  */
+.matrix-toggle:focus-visible {
+  outline: 2px solid var(--color-accent); /* nebo zcela zrušte */
+}
+
+/* ikona bez vlastní baseline */
+.bulb-icon {
+  display: block;   /* vezme přesně rozměr viewBoxu -> bez mezírky */
+}
